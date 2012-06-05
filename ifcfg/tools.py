@@ -11,7 +11,7 @@ def minimal_logger(name):
     console.setFormatter(formatter)
     console.setLevel(logging.DEBUG)   
     
-    if os.environ.has_key('IFCFG_DEBUG') and os.environ['IFCFG_DEBUG'] == '1':
+    if 'IFCFG_DEBUG' in os.environ.keys() and os.environ['IFCFG_DEBUG'] == '1':
         log.setLevel(logging.DEBUG)
         log.addHandler(console)
     return log
