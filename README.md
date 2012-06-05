@@ -15,18 +15,13 @@ Usage
 -----
 
     import ifcfg
+    import json
     parser = ifcfg.parse()
     
-    for interface in parser.interfaces:
-        print interface['name']
-        print interface['ether']
-        print interface['inet']
-        print interface['inet6]
-        print interface['netmask']
-        print interface['flags']
-        print interface['hostname']
-        print interface['mtu']
+    json.dumps(parser.interfaces)
 
+
+The output looks something like the following:
 
     $ python test.py | python -mjson.tool
     {
