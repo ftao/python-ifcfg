@@ -68,5 +68,5 @@ The output looks something like the following:
 License
 -------
 
-The dRest library is Open Source and is distributed under the BSD License 
+The Ifcfg library is Open Source and is distributed under the BSD License 
 (three clause).  Please see the LICENSE file included with this software.  
