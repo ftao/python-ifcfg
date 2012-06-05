@@ -153,10 +153,6 @@ class Linux2Parser(LinuxParser):
     def __init__(self, *args, **kw):
         super(Linux2Parser, self).__init__(*args, **kw)
 
-class Linux3Parser(LinuxParser):
-    def __init__(self, *args, **kw):
-        super(Linux3Parser, self).__init__(*args, **kw)
-
 class MacOSXParser(UnixParser):
     class Meta:
         override_patterns = [

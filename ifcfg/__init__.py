@@ -30,15 +30,15 @@ def get_parser(**kw):
     ifconfig = kw.get('ifconfig', None)
     if not parser:
         distro = kw.get('distro', platform.system())
-        kernel = kw.get('kernel', platform.uname()[2])
+        full_kernel = kw.get('kernel', platform.uname()[2])
+        kernel = '.'.join(full_kernel.split('.')[0:2]) 
         
         if distro == 'Linux':
-            if kernel.startswith('2'):
+            if float(kernel) < 3.3:
                 from .parser import Linux2Parser as LinuxParser
-            elif kernel.startswith('3'):
-                from .parser import Linux3Parser as LinuxParser
             else:
                 from .parser import LinuxParser
+            print LinuxParser
             parser = LinuxParser(ifconfig=ifconfig)
         elif distro in ['Darwin', 'MacOSX']:
             from .parser import MacOSXParser
