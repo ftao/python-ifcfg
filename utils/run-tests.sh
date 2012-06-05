@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ifconfig -a
+
 rm -rf coverage_html_report
 coverage erase
 coverage run `which nosetests` --verbosity=3 $SOURCES

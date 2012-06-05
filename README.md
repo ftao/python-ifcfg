@@ -16,12 +16,20 @@ Usage
 
     import ifcfg
     import json
-    parser = ifcfg.parse()
     
-    json.dumps(parser.interfaces)
+    for interface in ifcfg.interfaces:
+        # do something with interface
+        print interface['device']
+        print interface['inet']
+        print interface['inet6']
+        print interface['netmask']
+        print interface['broadcast']
+
+    default = ifcfg.default_interface()
 
 
-The output looks something like the following:
+The output of 'ifcfg.interfaces' dumped to JSON looks something like the 
+following:
 
     $ python test.py | python -mjson.tool
     {
