@@ -1,17 +1,68 @@
 
 import platform
+from . import meta
+from . import parser
+from . import tools
+from . import exc
 
-def parse(parser=None):
-    if not parser:
-        s = platform.system()
-        if s == 'Linux':
-            from .parser import LinuxParser
-            parser = LinuxParser()
-        elif s == 'Darwin':
-            from .parser import MacOSXParser
-            parser = MacOSXParser()
-        else:
-            raise IfcfgParserError("Unknown system type '%s'." % s)
+Log = tools.minimal_logger(__name__)
+
+def get_parser(**kw):
+    """
+    Detect the proper parser class, and return it instantiated.
+    
+    Optional Arguments:
+    
+        parser
+            The parser class to use instead of detecting the proper one.
             
+        distro
+            The distro to parse for (used for testing).
+        
+        kernel
+            The kernel to parse for (used for testing).
+        
+        ifconfig
+            The ifconfig (stdout) to pass to the parser (used for testing).
+            
+    """
+    parser = kw.get('parser', None)
+    ifconfig = kw.get('ifconfig', None)
+    if not parser:
+        distro = kw.get('distro', platform.system())
+        kernel = kw.get('kernel', platform.uname()[2])
+        
+        if distro == 'Linux':
+            if kernel.startswith('2'):
+                from .parser import Linux2Parser as LinuxParser
+            elif kernel.startswith('3'):
+                from .parser import Linux3Parser as LinuxParser
+            else:
+                from .parser import LinuxParser
+            parser = LinuxParser(ifconfig=ifconfig)
+        elif distro in ['Darwin', 'MacOSX']:
+            from .parser import MacOSXParser
+            parser = MacOSXParser(ifconfig=ifconfig)
+        else:
+            raise exc.IfcfgParserError("Unknown distro type '%s'." % distro)
+    
+    Log.debug("Distro detected as '%s'" % distro)
+    Log.debug("Using '%s'" % parser)        
     return parser
     
+def interfaces():
+    """
+    Return just the parsed interfaces dictionary from the proper parser.
+    
+    """
+    parser = get_parser()
+    return parser.interfaces
+
+def default_interface():
+    """
+    Return just the default interface device dictionary.
+    
+    """
+    parser = get_parser()
+    return parser.default_interface
+
