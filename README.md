@@ -1,4 +1,4 @@
-Python Wrapper Around the Ifconfig Utility on Unix/Linux/MacOSX
+Python Ifconfig Wrapper for Unix/Linux/MacOSX
 =============================================================================
 
 Ifcfg is a cross-platform (*nix) library for parsing 'ifconfig' output in
