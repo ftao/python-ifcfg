@@ -141,13 +141,16 @@ class LinuxParser(UnixParser):
 class Linux2Parser(LinuxParser):
     class Meta:
         override_patterns = [
-            '(?P<device>^[a-zA-Z0-9]+)(.*)Link encap:(.*).*',
+            '(?P<device>^[a-zA-Z0-9:]+)(.*)Link encap:(.*).*',
             '(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
             '.*(inet addr:)(?P<inet>[^\s]*).*',
             '.*(inet6 addr: )(?P<inet6>[^\s\/]*/(?P<prefixlen>[\d]*)).*',
+            '.*(P-t-P:)(?P<ptp>[^\s]*).*',
             '.*(Bcast:)(?P<broadcast>[^\s]*).*',
             '.*(Mask:)(?P<netmask>[^\s]*).*',    
             '.*(Scope:)(?P<scopeid>[^\s]*).*',
+            '.*(RX bytes:)(?P<rxbytes>\d+).*',
+            '.*(TX bytes:)(?P<txbytes>\d+).*',
             ]
             
     def __init__(self, *args, **kw):
