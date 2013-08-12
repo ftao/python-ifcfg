@@ -38,7 +38,6 @@ def get_parser(**kw):
                 from .parser import Linux2Parser as LinuxParser
             else:
                 from .parser import LinuxParser
-            print LinuxParser
             parser = LinuxParser(ifconfig=ifconfig)
         elif distro in ['Darwin', 'MacOSX']:
             from .parser import MacOSXParser
