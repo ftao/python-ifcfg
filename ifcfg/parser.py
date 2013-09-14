@@ -135,10 +135,6 @@ class UnixParser(IfcfgParser):
         super(UnixParser, self).__init__(*args, **kw)
 
 class LinuxParser(UnixParser):
-    def __init__(self, *args, **kw):
-        super(LinuxParser, self).__init__(*args, **kw)
-          
-class Linux2Parser(LinuxParser):
     class Meta:
         override_patterns = [
             '(?P<device>^[a-zA-Z0-9:]+)(.*)Link encap:(.*).*',
@@ -152,7 +148,11 @@ class Linux2Parser(LinuxParser):
             '.*(RX bytes:)(?P<rxbytes>\d+).*',
             '.*(TX bytes:)(?P<txbytes>\d+).*',
             ]
-            
+ 
+    def __init__(self, *args, **kw):
+        super(LinuxParser, self).__init__(*args, **kw)
+          
+class Linux2Parser(LinuxParser):
     def __init__(self, *args, **kw):
         super(Linux2Parser, self).__init__(*args, **kw)
 
