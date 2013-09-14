@@ -151,7 +151,10 @@ class LinuxParser(UnixParser):
  
     def __init__(self, *args, **kw):
         super(LinuxParser, self).__init__(*args, **kw)
-          
+
+    def alter(self, interfaces):
+        return interfaces
+
 class Linux2Parser(LinuxParser):
     def __init__(self, *args, **kw):
         super(Linux2Parser, self).__init__(*args, **kw)
