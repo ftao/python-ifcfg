@@ -1,4 +1,5 @@
 
+import os
 import re
 import socket
     
@@ -9,7 +10,12 @@ Log = minimal_logger(__name__)
 
 class IfcfgParser(MetaMixin):
     class Meta:
-        ifconfig_cmd_args = ['ifconfig', '-a']
+        ifconfig_cmd = 'ifconfig'
+        for path in ['/sbin','/usr/sbin','/bin','/usr/bin']:
+            if os.path.exists(os.path.join(path, ifconfig_cmd)):
+                ifconfig_cmd = os.path.join(path, ifconfig_cmd)
+                break
+        ifconfig_cmd_args = [ifconfig_cmd, '-a']
         patterns = [
             '(?P<device>^[a-zA-Z0-9]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
             '.*(inet )(?P<inet>[^\s]*).*',
