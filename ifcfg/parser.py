@@ -70,7 +70,7 @@ class IfcfgParser(MetaMixin):
                     # device block.
                     if 'device' in groupdict:
                         cur = groupdict['device']
-                        if not self._interfaces.has_key(cur):
+                        if not cur in self._interfaces:
                             self._interfaces[cur] = {}
 
                     for key in groupdict:
