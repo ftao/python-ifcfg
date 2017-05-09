@@ -34,7 +34,10 @@ def get_parser(**kw):
         full_kernel = kw.get('kernel', platform.uname()[2])
         split_kernel = full_kernel.split('.')[0:2]
         kernel_version = int(split_kernel[0])
-        kernel_major_rev = int(re.match('\d+', split_kernel[1]).group())
+        if len(split_kernel) > 1:
+            kernel_major_rev = int(re.match('\d+', split_kernel[1]).group())
+        else:
+            kernel_major_rev = 0
 
         if distro == 'Linux':
             if kernel_version < 3 and kernel_major_rev < 3:
