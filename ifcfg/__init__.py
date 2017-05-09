@@ -1,4 +1,4 @@
-
+import os
 import platform
 import re
 from . import meta
@@ -34,6 +34,7 @@ def get_parser(**kw):
         full_kernel = kw.get('kernel', platform.uname()[2])
         split_kernel = full_kernel.split('.')[0:2]
         kernel_version = int(split_kernel[0])
+        
         if len(split_kernel) > 1:
             kernel_major_rev = int(re.match('\d+', split_kernel[1]).group())
         else:
@@ -50,9 +51,14 @@ def get_parser(**kw):
             parser = MacOSXParser(ifconfig=ifconfig)
         else:
             raise exc.IfcfgParserError("Unknown distro type '%s'." % distro)
-    
-    Log.debug("Distro detected as '%s'" % distro)
-    Log.debug("Using '%s'" % parser)        
+        Log.debug("Distro detected as '%s'" % distro)
+        Log.debug("Using '%s'" % parser)
+        if not os.path.exists(parser._meta.ifconfig_cmd):
+            Log.debug("Could not find 'ifconfig' cmd, falling back to 'ip' cmd")
+            from .parser import UnixIPParser
+            parser = UnixIPParser(ifconfig=ifconfig)
+    else:
+        parser = parser(ifconfig=ifconfig)
     return parser
     
 def interfaces():

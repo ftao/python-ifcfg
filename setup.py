@@ -4,7 +4,7 @@ import sys, os
 
 setup(
     name='ifcfg',
-    version='0.9.4',
+    version='0.10',
     description="Python Ifconfig Wrapper for Unix/Linux/MacOSX",
     long_description="Python Ifconfig Wrapper for Unix/Linux/MacOSX",
     classifiers=[], 
