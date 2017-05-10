@@ -8,6 +8,7 @@ from .tools import exec_cmd, hex2dotted, minimal_logger
 
 Log = minimal_logger(__name__)
 
+
 class IfcfgParser(MetaMixin):
     class Meta:
         ifconfig_cmd = 'ifconfig'
@@ -139,9 +140,11 @@ class IfcfgParser(MetaMixin):
                 return self.interfaces[interface]
         return None # pragma: nocover
 
+
 class UnixParser(IfcfgParser):
     def __init__(self, *args, **kw):
         super(UnixParser, self).__init__(*args, **kw)
+
 
 class LinuxParser(UnixParser):
     class Meta:
@@ -164,9 +167,38 @@ class LinuxParser(UnixParser):
     def alter(self, interfaces):
         return interfaces
 
+
 class Linux2Parser(LinuxParser):
     def __init__(self, *args, **kw):
         super(Linux2Parser, self).__init__(*args, **kw)
+
+
+class UnixIPParser(IfcfgParser):
+    """
+    Because ifconfig is getting deprecated, we can use ip address instead
+    """
+    class Meta:
+        ifconfig_cmd = 'ip'
+        for path in ['/sbin','/usr/sbin','/bin','/usr/bin']:
+            if os.path.exists(os.path.join(path, ifconfig_cmd)):
+                ifconfig_cmd = os.path.join(path, ifconfig_cmd)
+                break
+        ifconfig_cmd_args = [ifconfig_cmd, 'address', 'show']
+        patterns = [
+            '\s*[0-9]+:\s+(?P<device>[a-zA-Z0-9]+):.*mtu (?P<mtu>.*)',
+            '.*(inet )(?P<inet>[^/]+).*',
+            '.*(inet6 )(?P<inet6>[^/]*).*',
+            '.*(ether )(?P<ether>[^\s]*).*',
+            '.*inet\s.*(brd )(?P<broadcast>[^\s]*).*',
+            '.*(inet )[^/]+(?P<netmask>[/][0-9]+).*',
+            #'.*(prefixlen )(?P<prefixlen>[^\s]*).*',
+            #'.*(scopeid )(?P<scopeid>[^\s]*).*',
+            #'.*(ether )(?P<ether>[^\s]*).*',
+            ]
+
+        override_patterns = []
+    
+
 
 class MacOSXParser(UnixParser):
     class Meta:
