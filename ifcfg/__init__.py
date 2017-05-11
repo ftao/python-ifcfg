@@ -1,12 +1,14 @@
 import os
 import platform
 import re
-from . import meta
 from . import parser
 from . import tools
 from . import exc
 
+__version__ = "0.10.1"
+
 Log = tools.minimal_logger(__name__)
+
 
 def get_parser(**kw):
     """
@@ -27,9 +29,9 @@ def get_parser(**kw):
             The ifconfig (stdout) to pass to the parser (used for testing).
             
     """
-    parser = kw.get('parser', None)
+    Parser = kw.get('parser', None)
     ifconfig = kw.get('ifconfig', None)
-    if not parser:
+    if not Parser:
         distro = kw.get('distro', platform.system())
         full_kernel = kw.get('kernel', platform.uname()[2])
         split_kernel = full_kernel.split('.')[0:2]
@@ -42,24 +44,24 @@ def get_parser(**kw):
 
         if distro == 'Linux':
             if kernel_version < 3 and kernel_major_rev < 3:
-                from .parser import Linux2Parser as LinuxParser
+                from .parser import Linux2Parser
+                Parser = Linux2Parser
             else:
                 from .parser import LinuxParser
-            parser = LinuxParser(ifconfig=ifconfig)
+                Parser = LinuxParser
         elif distro in ['Darwin', 'MacOSX']:
             from .parser import MacOSXParser
-            parser = MacOSXParser(ifconfig=ifconfig)
+            Parser = MacOSXParser
         else:
             raise exc.IfcfgParserError("Unknown distro type '%s'." % distro)
         Log.debug("Distro detected as '%s'" % distro)
-        Log.debug("Using '%s'" % parser)
-        if not os.path.exists(parser._meta.ifconfig_cmd):
+        Log.debug("Using '%s'" % Parser)
+        if not os.path.exists(Parser.get_command()[0]):
             Log.debug("Could not find 'ifconfig' cmd, falling back to 'ip' cmd")
             from .parser import UnixIPParser
-            parser = UnixIPParser(ifconfig=ifconfig)
-    else:
-        parser = parser(ifconfig=ifconfig)
-    return parser
+            Parser = UnixIPParser
+
+    return Parser(ifconfig=ifconfig)
     
 def interfaces():
     """

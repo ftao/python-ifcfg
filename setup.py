@@ -1,10 +1,11 @@
 
 from setuptools import setup, find_packages
-import sys, os
+
+import ifcfg
 
 setup(
     name='ifcfg',
-    version='0.10',
+    version=ifcfg.__version__,
     description="Python Ifconfig Wrapper for Unix/Linux/MacOSX",
     long_description="Python Ifconfig Wrapper for Unix/Linux/MacOSX",
     classifiers=[], 
