@@ -109,7 +109,7 @@ class IfcfgParser(object):
                 try:
                     host = socket.gethostbyaddr(device_dict['inet'])[0]
                     interfaces[device]['hostname'] = host
-                except socket.herror as e:
+                except socket.herror:
                     interfaces[device]['hostname'] = None
 
         return interfaces

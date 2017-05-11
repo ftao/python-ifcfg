@@ -5,6 +5,8 @@ from . import parser
 from . import tools
 from . import exc
 
+__version__ = "0.10.1"
+
 Log = tools.minimal_logger(__name__)
 
 
@@ -42,10 +44,11 @@ def get_parser(**kw):
 
         if distro == 'Linux':
             if kernel_version < 3 and kernel_major_rev < 3:
-                from .parser import Linux2Parser as LinuxParser
+                from .parser import Linux2Parser
+                Parser = Linux2Parser
             else:
                 from .parser import LinuxParser
-            Parser = LinuxParser
+                Parser = LinuxParser
         elif distro in ['Darwin', 'MacOSX']:
             from .parser import MacOSXParser
             Parser = MacOSXParser
