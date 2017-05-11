@@ -8,7 +8,7 @@ Hostname, etc.
 Some Limitations:
 
  * Targeted for Unix-like operating systems including Linux and Mac OSX
- * Relies on parsing 'ifconfig' output
+ * Relies on parsing `ifconfig` or `ip address` output
     
     
 Usage
