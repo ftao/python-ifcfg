@@ -16,7 +16,8 @@ class IfcfgParser(object):
         self.encoding = kw.get('encoding', 'latin1')
         self.parse(self.ifconfig_data)
 
-    def get_command(self):
+    @classmethod
+    def get_command(cls):
         ifconfig_cmd = 'ifconfig'
         for path in ['/sbin','/usr/sbin','/bin','/usr/bin']:
             if os.path.exists(os.path.join(path, ifconfig_cmd)):
@@ -24,7 +25,8 @@ class IfcfgParser(object):
                 break
         return [ifconfig_cmd, '-a']
 
-    def get_patterns(self):
+    @classmethod
+    def get_patterns(cls):
         return [
             '(?P<device>^[a-zA-Z0-9]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
             '.*(inet )(?P<inet>[^\s]*).*',
@@ -144,8 +146,9 @@ class UnixParser(IfcfgParser):
 
 
 class LinuxParser(UnixParser):
-    def get_patterns(self):
-        return super(LinuxParser, self).get_patterns() + [
+    @classmethod
+    def get_patterns(cls):
+        return super(LinuxParser, cls).get_patterns() + [
             '(?P<device>^[a-zA-Z0-9:]+)(.*)Link encap:(.*).*',
             '(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
             '.*(inet addr:)(?P<inet>[^\s]*).*',
@@ -170,7 +173,9 @@ class UnixIPParser(IfcfgParser):
     """
     Because ifconfig is getting deprecated, we can use ip address instead
     """
-    def get_command(self):
+
+    @classmethod
+    def get_command(cls):
         ifconfig_cmd = 'ip'
         for path in ['/sbin','/usr/sbin','/bin','/usr/bin']:
             if os.path.exists(os.path.join(path, ifconfig_cmd)):
@@ -178,7 +183,8 @@ class UnixIPParser(IfcfgParser):
                 break
         return [ifconfig_cmd, 'address', 'show']
     
-    def get_patterns(self):
+    @classmethod
+    def get_patterns(cls):
         return [
             '\s*[0-9]+:\s+(?P<device>[a-zA-Z0-9]+):.*mtu (?P<mtu>.*)',
             '.*(inet )(?P<inet>[^/]+).*',
@@ -193,9 +199,10 @@ class UnixIPParser(IfcfgParser):
 
 
 class MacOSXParser(UnixParser):
-    
-    def get_patterns(self):
-        return super(MacOSXParser, self).get_patterns() + [
+
+    @classmethod
+    def get_patterns(cls):
+        return super(MacOSXParser, cls).get_patterns() + [
             '.*(status: )(?P<status>[^\s]*).*',
             '.*(media: )(?P<media>.*)',
         ]

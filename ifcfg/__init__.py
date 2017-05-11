@@ -27,9 +27,9 @@ def get_parser(**kw):
             The ifconfig (stdout) to pass to the parser (used for testing).
             
     """
-    parser = kw.get('parser', None)
+    Parser = kw.get('parser', None)
     ifconfig = kw.get('ifconfig', None)
-    if not parser:
+    if not Parser:
         distro = kw.get('distro', platform.system())
         full_kernel = kw.get('kernel', platform.uname()[2])
         split_kernel = full_kernel.split('.')[0:2]
@@ -45,21 +45,20 @@ def get_parser(**kw):
                 from .parser import Linux2Parser as LinuxParser
             else:
                 from .parser import LinuxParser
-            parser = LinuxParser(ifconfig=ifconfig)
+            Parser = LinuxParser
         elif distro in ['Darwin', 'MacOSX']:
             from .parser import MacOSXParser
-            parser = MacOSXParser(ifconfig=ifconfig)
+            Parser = MacOSXParser
         else:
             raise exc.IfcfgParserError("Unknown distro type '%s'." % distro)
         Log.debug("Distro detected as '%s'" % distro)
-        Log.debug("Using '%s'" % parser)
-        if not os.path.exists(parser.get_command()[0]):
+        Log.debug("Using '%s'" % Parser)
+        if not os.path.exists(Parser.get_command()[0]):
             Log.debug("Could not find 'ifconfig' cmd, falling back to 'ip' cmd")
             from .parser import UnixIPParser
-            parser = UnixIPParser(ifconfig=ifconfig)
-    else:
-        parser = parser(ifconfig=ifconfig)
-    return parser
+            Parser = UnixIPParser
+
+    return Parser(ifconfig=ifconfig)
     
 def interfaces():
     """
