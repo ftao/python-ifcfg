@@ -1,12 +1,12 @@
 import os
 import platform
 import re
-from . import meta
 from . import parser
 from . import tools
 from . import exc
 
 Log = tools.minimal_logger(__name__)
+
 
 def get_parser(**kw):
     """
@@ -53,7 +53,7 @@ def get_parser(**kw):
             raise exc.IfcfgParserError("Unknown distro type '%s'." % distro)
         Log.debug("Distro detected as '%s'" % distro)
         Log.debug("Using '%s'" % parser)
-        if not os.path.exists(parser._meta.ifconfig_cmd):
+        if not os.path.exists(parser.get_command()[0]):
             Log.debug("Could not find 'ifconfig' cmd, falling back to 'ip' cmd")
             from .parser import UnixIPParser
             parser = UnixIPParser(ifconfig=ifconfig)

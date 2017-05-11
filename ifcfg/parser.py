@@ -3,21 +3,29 @@ import os
 import re
 import socket
 
-from .meta import MetaMixin
 from .tools import exec_cmd, hex2dotted, minimal_logger
 
 Log = minimal_logger(__name__)
 
 
-class IfcfgParser(MetaMixin):
-    class Meta:
+class IfcfgParser(object):
+
+    def __init__(self, *args, **kw):
+        self._interfaces = {}
+        self.ifconfig_data = kw.get('ifconfig', None)
+        self.encoding = kw.get('encoding', 'latin1')
+        self.parse(self.ifconfig_data)
+
+    def get_command(self):
         ifconfig_cmd = 'ifconfig'
         for path in ['/sbin','/usr/sbin','/bin','/usr/bin']:
             if os.path.exists(os.path.join(path, ifconfig_cmd)):
                 ifconfig_cmd = os.path.join(path, ifconfig_cmd)
                 break
-        ifconfig_cmd_args = [ifconfig_cmd, '-a']
-        patterns = [
+        return [ifconfig_cmd, '-a']
+
+    def get_patterns(self):
+        return [
             '(?P<device>^[a-zA-Z0-9]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
             '.*(inet )(?P<inet>[^\s]*).*',
             '.*(inet6 )(?P<inet6>[^\s]*).*',
@@ -27,18 +35,7 @@ class IfcfgParser(MetaMixin):
             '.*(prefixlen )(?P<prefixlen>[^\s]*).*',
             '.*(scopeid )(?P<scopeid>[^\s]*).*',
             '.*(ether )(?P<ether>[^\s]*).*',
-            ]
-        override_patterns = []
-
-    def __init__(self, *args, **kw):
-        super(IfcfgParser, self).__init__(*args, **kw)
-        self._interfaces = {}
-        self.ifconfig_data = kw.get('ifconfig', None)
-        self.encoding = kw.get('encoding', 'latin1')
-        self.parse(self.ifconfig_data)
-
-    def _get_patterns(self):
-        return self._meta.patterns + self._meta.override_patterns
+        ]
 
     def parse(self, ifconfig=None):
         """
@@ -48,12 +45,12 @@ class IfcfgParser(MetaMixin):
 
             ifconfig
                 The data (stdout) from the ifconfig command.  Default is to
-                call self._meta.ifconfig_cmd_args for the stdout.
+                call exec_cmd(self.get_command()).
 
         """
         _interfaces = []
         if not ifconfig:
-            ifconfig, err, retcode = exec_cmd(self._meta.ifconfig_cmd_args)
+            ifconfig, __, __ = exec_cmd(self.get_command())
         if hasattr(ifconfig, 'decode'):
             ifconfig = ifconfig.decode(self.encoding)
         self.ifconfig_data = ifconfig
@@ -61,7 +58,7 @@ class IfcfgParser(MetaMixin):
         all_keys = []
 
         for line in self.ifconfig_data.splitlines():
-            for pattern in self._get_patterns():
+            for pattern in self.get_patterns():
                 m = re.match(pattern, line)
                 if m:
                     groupdict = m.groupdict()
@@ -129,7 +126,7 @@ class IfcfgParser(MetaMixin):
         Returns the default interface device.
 
         """
-        out, err, ret = exec_cmd(['/sbin/route', '-n'])
+        out, __, __ = exec_cmd(['/sbin/route', '-n'])
         lines = out.splitlines()
         for line in lines[2:]:
             if line.split()[0] == '0.0.0.0':
@@ -147,8 +144,8 @@ class UnixParser(IfcfgParser):
 
 
 class LinuxParser(UnixParser):
-    class Meta:
-        override_patterns = [
+    def get_patterns(self):
+        return super(LinuxParser, self).get_patterns() + [
             '(?P<device>^[a-zA-Z0-9:]+)(.*)Link encap:(.*).*',
             '(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
             '.*(inet addr:)(?P<inet>[^\s]*).*',
@@ -159,32 +156,30 @@ class LinuxParser(UnixParser):
             '.*(Scope:)(?P<scopeid>[^\s]*).*',
             '.*(RX bytes:)(?P<rxbytes>\d+).*',
             '.*(TX bytes:)(?P<txbytes>\d+).*',
-            ]
-
-    def __init__(self, *args, **kw):
-        super(LinuxParser, self).__init__(*args, **kw)
+        ]
 
     def alter(self, interfaces):
         return interfaces
 
 
 class Linux2Parser(LinuxParser):
-    def __init__(self, *args, **kw):
-        super(Linux2Parser, self).__init__(*args, **kw)
+    pass
 
 
 class UnixIPParser(IfcfgParser):
     """
     Because ifconfig is getting deprecated, we can use ip address instead
     """
-    class Meta:
+    def get_command(self):
         ifconfig_cmd = 'ip'
         for path in ['/sbin','/usr/sbin','/bin','/usr/bin']:
             if os.path.exists(os.path.join(path, ifconfig_cmd)):
                 ifconfig_cmd = os.path.join(path, ifconfig_cmd)
                 break
-        ifconfig_cmd_args = [ifconfig_cmd, 'address', 'show']
-        patterns = [
+        return [ifconfig_cmd, 'address', 'show']
+    
+    def get_patterns(self):
+        return [
             '\s*[0-9]+:\s+(?P<device>[a-zA-Z0-9]+):.*mtu (?P<mtu>.*)',
             '.*(inet )(?P<inet>[^/]+).*',
             '.*(inet6 )(?P<inet6>[^/]*).*',
@@ -194,21 +189,16 @@ class UnixIPParser(IfcfgParser):
             #'.*(prefixlen )(?P<prefixlen>[^\s]*).*',
             #'.*(scopeid )(?P<scopeid>[^\s]*).*',
             #'.*(ether )(?P<ether>[^\s]*).*',
-            ]
-
-        override_patterns = []
-    
+        ]
 
 
 class MacOSXParser(UnixParser):
-    class Meta:
-        override_patterns = [
+    
+    def get_patterns(self):
+        return super(MacOSXParser, self).get_patterns() + [
             '.*(status: )(?P<status>[^\s]*).*',
             '.*(media: )(?P<media>.*)',
-            ]
-
-    def __init__(self, *args, **kw):
-        super(MacOSXParser, self).__init__(*args, **kw)
+        ]
 
     def parse(self, *args, **kw):
         super(MacOSXParser, self).parse(*args, **kw)
