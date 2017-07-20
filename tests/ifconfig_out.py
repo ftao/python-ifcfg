@@ -6,17 +6,17 @@ eth0      Link encap:Ethernet  HWaddr 1a:2b:3c:4d:5e:6f
           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
           RX packets:4041381 errors:0 dropped:0 overruns:0 frame:0
           TX packets:3851783 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
+          collisions:0 txqueuelen:1000
           RX bytes:1123058554 (1.0 GiB)  TX bytes:737462074 (703.2 MiB)
-          Interrupt:24 
+          Interrupt:24
 
-lo        Link encap:Local Loopback  
+lo        Link encap:Local Loopback
           inet addr:127.0.0.1  Mask:255.0.0.0
           inet6 addr: ::1/128 Scope:Host
           UP LOOPBACK RUNNING  MTU:16436  Metric:1
           RX packets:126491 errors:0 dropped:0 overruns:0 frame:0
           TX packets:126491 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:0 
+          collisions:0 txqueuelen:0
           RX bytes:43170341 (41.1 MiB)  TX bytes:43170341 (41.1 MiB)
 """
 
@@ -45,14 +45,14 @@ LINUX = LINUX3
 MACOSX = """
 en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
 	options=2b<RXCSUM,TXCSUM,VLAN_HWTAGGING,TSO4>
-	ether 1a:2b:3c:4d:5e:6f 
-	inet6 fe80::4240:36ff:fe38:a121%en0 prefixlen 64 scopeid 0x5 
+	ether 1a:2b:3c:4d:5e:6f
+	inet6 fe80::4240:36ff:fe38:a121%en0 prefixlen 64 scopeid 0x5
 	inet 192.168.0.1 netmask 0xffffff00 broadcast 192.168.0.255
 	media: autoselect (100baseTX <full-duplex>)
 	status: active
 lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
 	options=3<RXCSUM,TXCSUM>
-	inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1 
-	inet 127.0.0.1 netmask 0xff000000 
-	inet6 ::1 prefixlen 128 
-"""
+	inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+	inet 127.0.0.1 netmask 0xff000000
+	inet6 ::1 prefixlen 128
+"""  # noqa

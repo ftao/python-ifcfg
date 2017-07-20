@@ -1,22 +1,22 @@
-
-import os
 import logging
-import sys
-from subprocess import Popen, PIPE
+import os
+from subprocess import PIPE, Popen
+
 
 def minimal_logger(name):
     log = logging.getLogger(name)
     formatter = logging.Formatter(
-                "%(asctime)s IFCFG DEBUG : %(name)s : %(message)s")
+        "%(asctime)s IFCFG DEBUG : %(name)s : %(message)s"
+    )
     console = logging.StreamHandler()
     console.setFormatter(formatter)
-    console.setLevel(logging.DEBUG)   
-    
+    console.setLevel(logging.DEBUG)
+
     if 'IFCFG_DEBUG' in os.environ.keys() and os.environ['IFCFG_DEBUG'] == '1':
         log.setLevel(logging.DEBUG)
         log.addHandler(console)
     return log
-    
+
 def exec_cmd(cmd_args):
     proc = Popen(cmd_args, stdout=PIPE, stderr=PIPE)
     (stdout, stderr) = proc.communicate()

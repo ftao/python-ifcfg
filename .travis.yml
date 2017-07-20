@@ -32,4 +32,4 @@ notifications:
     - "irc.freenode.org#django-wiki"
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov

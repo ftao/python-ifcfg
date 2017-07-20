@@ -1,21 +1,21 @@
 """Tests for Ifcfg."""
 
 import unittest
-from nose.tools import ok_, eq_, raises
-from nose import SkipTest
 
 import ifcfg
 from ifcfg.parser import UnixIPParser
+from nose.tools import eq_, ok_
+
 from . import ip_out
 
 
 class IpTestCase(unittest.TestCase):
     def setUp(self):
         pass
-        
+
     def tearDown(self):
         pass
-        
+
     def test_ifcfg(self):
         interfaces = ifcfg.interfaces()
         res = len(interfaces) > 0

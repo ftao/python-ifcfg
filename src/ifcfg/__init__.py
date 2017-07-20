@@ -1,7 +1,6 @@
 import os
 import platform
 import re
-from . import parser
 from . import tools
 from . import exc
 
@@ -13,21 +12,21 @@ Log = tools.minimal_logger(__name__)
 def get_parser(**kw):
     """
     Detect the proper parser class, and return it instantiated.
-    
+
     Optional Arguments:
-    
+
         parser
             The parser class to use instead of detecting the proper one.
-            
+
         distro
             The distro to parse for (used for testing).
-        
+
         kernel
             The kernel to parse for (used for testing).
-        
+
         ifconfig
             The ifconfig (stdout) to pass to the parser (used for testing).
-            
+
     """
     Parser = kw.get('parser', None)
     ifconfig = kw.get('ifconfig', None)
@@ -36,7 +35,7 @@ def get_parser(**kw):
         full_kernel = kw.get('kernel', platform.uname()[2])
         split_kernel = full_kernel.split('.')[0:2]
         kernel_version = int(split_kernel[0])
-        
+
         if len(split_kernel) > 1:
             kernel_major_rev = int(re.match('\d+', split_kernel[1]).group())
         else:
@@ -62,11 +61,11 @@ def get_parser(**kw):
             Parser = UnixIPParser
 
     return Parser(ifconfig=ifconfig)
-    
+
 def interfaces():
     """
     Return just the parsed interfaces dictionary from the proper parser.
-    
+
     """
     parser = get_parser()
     return parser.interfaces
@@ -74,8 +73,7 @@ def interfaces():
 def default_interface():
     """
     Return just the default interface device dictionary.
-    
+
     """
     parser = get_parser()
     return parser.default_interface
-

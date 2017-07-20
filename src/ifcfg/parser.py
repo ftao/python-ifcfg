@@ -19,7 +19,7 @@ class IfcfgParser(object):
     @classmethod
     def get_command(cls):
         ifconfig_cmd = 'ifconfig'
-        for path in ['/sbin','/usr/sbin','/bin','/usr/bin']:
+        for path in ['/sbin', '/usr/sbin', '/bin', '/usr/bin']:
             if os.path.exists(os.path.join(path, ifconfig_cmd)):
                 ifconfig_cmd = os.path.join(path, ifconfig_cmd)
                 break
@@ -39,7 +39,7 @@ class IfcfgParser(object):
             '.*(ether )(?P<ether>[^\s]*).*',
         ]
 
-    def parse(self, ifconfig=None):
+    def parse(self, ifconfig=None):  # noqa: max-complexity=12
         """
         Parse ifconfig output into self._interfaces.
 
@@ -50,7 +50,6 @@ class IfcfgParser(object):
                 call exec_cmd(self.get_command()).
 
         """
-        _interfaces = []
         if not ifconfig:
             ifconfig, __, __ = exec_cmd(self.get_command())
         if hasattr(ifconfig, 'decode'):
@@ -70,7 +69,7 @@ class IfcfgParser(object):
                     # device block.
                     if 'device' in groupdict:
                         cur = groupdict['device']
-                        if not cur in self._interfaces:
+                        if cur not in self._interfaces:
                             self._interfaces[cur] = {}
 
                     for key in groupdict:
@@ -83,7 +82,7 @@ class IfcfgParser(object):
 
         # standardize
         for key in all_keys:
-            for device,device_dict in self._interfaces.items():
+            for device, device_dict in self._interfaces.items():
                 if key not in device_dict:
                     self._interfaces[device][key] = None
                 if type(device_dict[key]) == str:
@@ -104,7 +103,7 @@ class IfcfgParser(object):
 
         """
         # fixup some things
-        for device,device_dict in interfaces.items():
+        for device, device_dict in interfaces.items():
             if 'inet' in device_dict:
                 try:
                     host = socket.gethostbyaddr(device_dict['inet'])[0]
@@ -140,7 +139,7 @@ class IfcfgParser(object):
             if interface == iface:
                 return self.interfaces[interface]
 
-        return None # pragma: nocover
+        return None
 
 
 class UnixParser(IfcfgParser):
@@ -180,12 +179,12 @@ class UnixIPParser(IfcfgParser):
     @classmethod
     def get_command(cls):
         ifconfig_cmd = 'ip'
-        for path in ['/sbin','/usr/sbin','/bin','/usr/bin']:
+        for path in ['/sbin', '/usr/sbin', '/bin', '/usr/bin']:
             if os.path.exists(os.path.join(path, ifconfig_cmd)):
                 ifconfig_cmd = os.path.join(path, ifconfig_cmd)
                 break
         return [ifconfig_cmd, 'address', 'show']
-    
+
     @classmethod
     def get_patterns(cls):
         return [
@@ -195,9 +194,9 @@ class UnixIPParser(IfcfgParser):
             '.*(ether )(?P<ether>[^\s]*).*',
             '.*inet\s.*(brd )(?P<broadcast>[^\s]*).*',
             '.*(inet )[^/]+(?P<netmask>[/][0-9]+).*',
-            #'.*(prefixlen )(?P<prefixlen>[^\s]*).*',
-            #'.*(scopeid )(?P<scopeid>[^\s]*).*',
-            #'.*(ether )(?P<ether>[^\s]*).*',
+            # '.*(prefixlen )(?P<prefixlen>[^\s]*).*',
+            # '.*(scopeid )(?P<scopeid>[^\s]*).*',
+            # '.*(ether )(?P<ether>[^\s]*).*',
         ]
 
 
@@ -214,7 +213,7 @@ class MacOSXParser(UnixParser):
         super(MacOSXParser, self).parse(*args, **kw)
 
         # fix up netmask address for mac
-        for device,device_dict in self.interfaces.items():
+        for device, device_dict in self.interfaces.items():
             if device_dict['netmask'] is not None:
                 netmask = self.interfaces[device]['netmask']
                 self.interfaces[device]['netmask'] = hex2dotted(netmask)
