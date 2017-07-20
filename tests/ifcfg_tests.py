@@ -21,7 +21,7 @@ class IfcfgTestCase(unittest.TestCase):
 
     @raises(ifcfg.exc.IfcfgParserError)
     def test_unknown(self):
-        parser = ifcfg.get_parser(distro='Bogus', kernel='55')
+        ifcfg.get_parser(distro='Bogus', kernel='55')
         
     def test_linux(self):
         parser = ifcfg.get_parser(distro='Linux', kernel='4',

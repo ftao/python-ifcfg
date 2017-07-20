@@ -130,13 +130,16 @@ class IfcfgParser(object):
         """
         out, __, __ = exec_cmd(['/sbin/route', '-n'])
         lines = out.splitlines()
+        iface = ""
         for line in lines[2:]:
-            if line.split()[0] == '0.0.0.0':
-                iface = line.split()[-1]
+            if str(line.split()[0]) == '0.0.0.0':
+                iface = str(line.split()[-1])
+                break
 
-        for interface in self.interfaces:
+        for interface in self.interfaces.keys():
             if interface == iface:
                 return self.interfaces[interface]
+
         return None # pragma: nocover
 
 

@@ -1,6 +1,7 @@
 
 import os
 import logging
+import sys
 from subprocess import Popen, PIPE
 
 def minimal_logger(name):
@@ -20,6 +21,8 @@ def exec_cmd(cmd_args):
     proc = Popen(cmd_args, stdout=PIPE, stderr=PIPE)
     (stdout, stderr) = proc.communicate()
     proc.wait()
+    stdout = stdout.decode("utf-8")
+    stderr = stderr.decode("utf-8")
     return (stdout, stderr, proc.returncode)
 
 def hex2dotted(hex_num):
