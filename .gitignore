@@ -28,3 +28,4 @@ pip-log.txt
 htmlcov
 coverage_html_report
 test.py
+.venv
