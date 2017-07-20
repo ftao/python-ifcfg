@@ -3,10 +3,10 @@ Python Ifconfig Wrapper for Unix/Linux/MacOSX
 
 .. image:: https://badge.fury.io/py/ifcfg.svg
    :target: https://pypi.python.org/pypi/ifcfg/
-.. image:: https://travis-ci.org/learningequality/ifcfg.svg
-  :target: https://travis-ci.org/learningequality/ifcfg
-.. image:: http://codecov.io/github/learningequality/ifcfg/coverage.svg?branch=master
-  :target: http://codecov.io/github/learningequality/ifcfg?branch=master
+.. image:: https://travis-ci.org/learningequality/python-ifcfg.svg
+  :target: https://travis-ci.org/learningequality/python-ifcfg
+.. image:: http://codecov.io/github/learningequality/python-ifcfg/coverage.svg?branch=master
+  :target: http://codecov.io/github/learningequality/python-ifcfg?branch=master
 
 Ifcfg is a cross-platform (\*nix) library for parsing 'ifconfig' output
 in Python. It is useful for pulling information such as IP, Netmask, MAC
