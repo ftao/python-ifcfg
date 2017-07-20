@@ -1,18 +1,19 @@
 Python Ifconfig Wrapper for Unix/Linux/MacOSX
-=============================================================================
+=============================================
 
-Ifcfg is a cross-platform (*nix) library for parsing 'ifconfig' output in
-Python.  It is useful for pulling information such as IP, Netmask, MAC Address,
-Hostname, etc.
+Ifcfg is a cross-platform (\*nix) library for parsing 'ifconfig' output
+in Python. It is useful for pulling information such as IP, Netmask, MAC
+Address, Hostname, etc.
 
 Some Limitations:
 
- * Targeted for Unix-like operating systems including Linux and Mac OSX
- * Relies on parsing `ifconfig` or `ip address` output
-
+-  Targeted for Unix-like operating systems including Linux and Mac OSX
+-  Relies on parsing ``ifconfig`` or ``ip address`` output
 
 Usage
 -----
+
+::
 
     import ifcfg
     import json
@@ -27,9 +28,10 @@ Usage
 
     default = ifcfg.default_interface()
 
-
 The output of 'ifcfg.interfaces' dumped to JSON looks something like the
 following:
+
+::
 
     $ python test.py | python -mjson.tool
     {
@@ -73,8 +75,10 @@ following:
             "scopeid": null
         }
     }
+
 License
 -------
 
-The Ifcfg library is Open Source and is distributed under the BSD License
-(three clause).  Please see the LICENSE file included with this software.  
+The Ifcfg library is Open Source and is distributed under the BSD
+License (three clause). Please see the LICENSE file included with this
+software.
