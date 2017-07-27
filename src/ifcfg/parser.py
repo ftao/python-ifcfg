@@ -13,7 +13,6 @@ class IfcfgParser(object):
     def __init__(self, *args, **kw):
         self._interfaces = {}
         self.ifconfig_data = kw.get('ifconfig', None)
-        self.encoding = kw.get('encoding', 'latin1')
         self.parse(self.ifconfig_data)
 
     @classmethod
@@ -52,8 +51,6 @@ class IfcfgParser(object):
         """
         if not ifconfig:
             ifconfig, __, __ = exec_cmd(self.get_command())
-        if hasattr(ifconfig, 'decode'):
-            ifconfig = ifconfig.decode(self.encoding)
         self.ifconfig_data = ifconfig
         cur = None
         all_keys = []

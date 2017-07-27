@@ -87,6 +87,12 @@ following:
 Release notes
 -------------
 
+0.11 (unreleased)
+_________________
+
+ * Removing ill-defined ``encoding`` keyword from ``ifcfg.get_parser``
+
+
 0.10.1
 ____
 
