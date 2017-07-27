@@ -8,7 +8,7 @@ from .tools import exec_cmd, hex2dotted, minimal_logger
 Log = minimal_logger(__name__)
 
 
-class IfcfgParser(object):
+class UnixParser(object):
 
     def __init__(self, *args, **kw):
         self._interfaces = {}
@@ -139,11 +139,6 @@ class IfcfgParser(object):
         return None
 
 
-class UnixParser(IfcfgParser):
-    def __init__(self, *args, **kw):
-        super(UnixParser, self).__init__(*args, **kw)
-
-
 class LinuxParser(UnixParser):
     @classmethod
     def get_patterns(cls):
@@ -164,7 +159,7 @@ class LinuxParser(UnixParser):
         return interfaces
 
 
-class UnixIPParser(IfcfgParser):
+class UnixIPParser(UnixParser):
     """
     Because ifconfig is getting deprecated, we can use ip address instead
     """

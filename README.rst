@@ -90,8 +90,12 @@ Release notes
 0.11 (unreleased)
 _________________
 
+This release seeks to clean up the codebase (sparringly!) and introduce
+Windows compatibility.
+
  * Removing ill-defined ``encoding`` keyword arg from ``ifcfg.get_parser``
  * Removed no-op Linux Kernel 2.x parsing and ``kernel`` keyword arg
+ * Removed class ``ifcfg.IfcfgParser``, use ``UnixParser`` instead
 
 
 0.10.1
