@@ -22,7 +22,7 @@ class IpTestCase(unittest.TestCase):
         ok_(res)
 
     def test_linux(self):
-        parser = ifcfg.get_parser(distro='Linux', kernel='4',
+        parser = ifcfg.get_parser(distro='Linux',
                                   ifconfig=ip_out.LINUX,
                                   parser=UnixIPParser)
         interfaces = parser.interfaces

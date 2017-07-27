@@ -25,7 +25,7 @@ class IfcfgTestCase(unittest.TestCase):
         ifcfg.get_parser(distro='Bogus', kernel='55')
 
     def test_linux(self):
-        parser = ifcfg.get_parser(distro='Linux', kernel='4',
+        parser = ifcfg.get_parser(distro='Linux',
                                   ifconfig=ifconfig_out.LINUX)
         interfaces = parser.interfaces
         eq_(interfaces['eth0']['ether'], '1a:2b:3c:4d:5e:6f')
@@ -34,7 +34,7 @@ class IfcfgTestCase(unittest.TestCase):
         eq_(interfaces['eth0']['netmask'], '255.255.255.0')
 
     def test_linux2(self):
-        parser = ifcfg.get_parser(distro='Linux', kernel='2.6',
+        parser = ifcfg.get_parser(distro='Linux',
                                   ifconfig=ifconfig_out.LINUX2)
         interfaces = parser.interfaces
         eq_(interfaces['eth0']['ether'], '1a:2b:3c:4d:5e:6f')
@@ -43,7 +43,7 @@ class IfcfgTestCase(unittest.TestCase):
         eq_(interfaces['eth0']['netmask'], '255.255.255.0')
 
     def test_linux3(self):
-        parser = ifcfg.get_parser(distro='Linux', kernel='3.3',
+        parser = ifcfg.get_parser(distro='Linux',
                                   ifconfig=ifconfig_out.LINUX3)
         interfaces = parser.interfaces
         eq_(interfaces['eth0']['ether'], '1a:2b:3c:4d:5e:6f')
@@ -52,7 +52,7 @@ class IfcfgTestCase(unittest.TestCase):
         eq_(interfaces['eth0']['netmask'], '255.255.255.0')
 
     def test_macosx(self):
-        parser = ifcfg.get_parser(distro='MacOSX', kernel='11.4.0',
+        parser = ifcfg.get_parser(distro='MacOSX',
                                   ifconfig=ifconfig_out.MACOSX)
         interfaces = parser.interfaces
         eq_(interfaces['en0']['ether'], '1a:2b:3c:4d:5e:6f')

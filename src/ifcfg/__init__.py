@@ -1,6 +1,5 @@
 import os
 import platform
-import re
 from . import tools
 from . import exc
 
@@ -21,9 +20,6 @@ def get_parser(**kw):
         distro
             The distro to parse for (used for testing).
 
-        kernel
-            The kernel to parse for (used for testing).
-
         ifconfig
             The ifconfig (stdout) to pass to the parser (used for testing).
 
@@ -32,20 +28,7 @@ def get_parser(**kw):
     ifconfig = kw.get('ifconfig', None)
     if not Parser:
         distro = kw.get('distro', platform.system())
-        full_kernel = kw.get('kernel', platform.uname()[2])
-        split_kernel = full_kernel.split('.')[0:2]
-        kernel_version = int(split_kernel[0])
-
-        if len(split_kernel) > 1:
-            kernel_major_rev = int(re.match('\d+', split_kernel[1]).group())
-        else:
-            kernel_major_rev = 0
-
         if distro == 'Linux':
-            if kernel_version < 3 and kernel_major_rev < 3:
-                from .parser import Linux2Parser
-                Parser = Linux2Parser
-            else:
                 from .parser import LinuxParser
                 Parser = LinuxParser
         elif distro in ['Darwin', 'MacOSX']:

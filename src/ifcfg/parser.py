@@ -164,10 +164,6 @@ class LinuxParser(UnixParser):
         return interfaces
 
 
-class Linux2Parser(LinuxParser):
-    pass
-
-
 class UnixIPParser(IfcfgParser):
     """
     Because ifconfig is getting deprecated, we can use ip address instead

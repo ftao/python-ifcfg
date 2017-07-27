@@ -90,7 +90,8 @@ Release notes
 0.11 (unreleased)
 _________________
 
- * Removing ill-defined ``encoding`` keyword from ``ifcfg.get_parser``
+ * Removing ill-defined ``encoding`` keyword arg from ``ifcfg.get_parser``
+ * Removed no-op Linux Kernel 2.x parsing and ``kernel`` keyword arg
 
 
 0.10.1
