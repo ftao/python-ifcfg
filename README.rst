@@ -83,6 +83,24 @@ following:
         }
     }
 
+
+Release notes
+-------------
+
+0.10.1
+____
+
+ * Fixed encoding issues, preventing ``default_interface`` to be detected
+
+
+0.10
+____
+
+ * Support for Unix systems w/o ``ifconfig``, for instance newer Ubuntu/Debian
+ * Refactored to use  ``src/`` hierarchy
+
+
+
 License
 -------
 

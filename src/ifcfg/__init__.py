@@ -4,7 +4,7 @@ import re
 from . import tools
 from . import exc
 
-__version__ = "0.10.1"
+__version__ = "0.11dev0"
 
 Log = tools.minimal_logger(__name__)
 
