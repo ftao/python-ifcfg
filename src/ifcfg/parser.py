@@ -1,4 +1,3 @@
-
 import os
 import re
 import socket
@@ -118,17 +117,18 @@ class UnixParser(object):
         """
         return self._interfaces
 
-    @property
-    def default_interface(self):
+    def _default_interface(self, route_output=None):
         """
-        Returns the default interface device.
-
+        :param route_output: For mocking actual output
         """
-        out, __, __ = exec_cmd(['/sbin/route', '-n'])
-        lines = out.splitlines()
+        if not route_output:
+            out, __, __ = exec_cmd(['/sbin/route', '-n'])
+            lines = out.splitlines()
+        else:
+            lines = route_output.split("\n")
         iface = ""
         for line in lines[2:]:
-            if str(line.split()[0]) == '0.0.0.0':
+            if str(line.split(" ")[0]) == '0.0.0.0':
                 iface = str(line.split()[-1])
                 break
 
@@ -137,6 +137,13 @@ class UnixParser(object):
                 return self.interfaces[interface]
 
         return None
+
+    @property
+    def default_interface(self):
+        """
+        Returns the default interface device.
+        """
+        return self._default_interface()
 
 
 class LinuxParser(UnixParser):

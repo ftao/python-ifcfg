@@ -1,32 +1,31 @@
 """Tests for Ifcfg."""
 
-import unittest
 
 import ifcfg
 from nose.tools import eq_, ok_, raises
 
 from . import ifconfig_out
+from .base import IfcfgTestCase
 
 
-class IfcfgTestCase(unittest.TestCase):
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+class IfcfgTestCase(IfcfgTestCase):
 
     def test_ifcfg(self):
-        interfaces = ifcfg.interfaces()
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = ifcfg.get_parser_class()
+        interfaces = ifcfg.interfaces(ifconfig=ifconfig_out.LINUX)
         res = len(interfaces) > 0
         ok_(res)
 
     @raises(ifcfg.exc.IfcfgParserError)
     def test_unknown(self):
-        ifcfg.get_parser(distro='Bogus', kernel='55')
+        ifcfg.distro = 'Bogus'
+        ifcfg.Parser = ifcfg.get_parser_class()
 
     def test_linux(self):
-        parser = ifcfg.get_parser(distro='Linux',
-                                  ifconfig=ifconfig_out.LINUX)
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = ifcfg.get_parser_class()
+        parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX)
         interfaces = parser.interfaces
         eq_(interfaces['eth0']['ether'], '1a:2b:3c:4d:5e:6f')
         eq_(interfaces['eth0']['inet'], '192.168.0.1')
@@ -34,8 +33,9 @@ class IfcfgTestCase(unittest.TestCase):
         eq_(interfaces['eth0']['netmask'], '255.255.255.0')
 
     def test_linux2(self):
-        parser = ifcfg.get_parser(distro='Linux',
-                                  ifconfig=ifconfig_out.LINUX2)
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = ifcfg.get_parser_class()
+        parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX2)
         interfaces = parser.interfaces
         eq_(interfaces['eth0']['ether'], '1a:2b:3c:4d:5e:6f')
         eq_(interfaces['eth0']['inet'], '192.168.0.1')
@@ -43,8 +43,9 @@ class IfcfgTestCase(unittest.TestCase):
         eq_(interfaces['eth0']['netmask'], '255.255.255.0')
 
     def test_linux3(self):
-        parser = ifcfg.get_parser(distro='Linux',
-                                  ifconfig=ifconfig_out.LINUX3)
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = ifcfg.get_parser_class()
+        parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX3)
         interfaces = parser.interfaces
         eq_(interfaces['eth0']['ether'], '1a:2b:3c:4d:5e:6f')
         eq_(interfaces['eth0']['inet'], '192.168.0.1')
@@ -52,8 +53,9 @@ class IfcfgTestCase(unittest.TestCase):
         eq_(interfaces['eth0']['netmask'], '255.255.255.0')
 
     def test_macosx(self):
-        parser = ifcfg.get_parser(distro='MacOSX',
-                                  ifconfig=ifconfig_out.MACOSX)
+        ifcfg.distro = 'MacOSX'
+        ifcfg.Parser = ifcfg.get_parser_class()
+        parser = ifcfg.get_parser(ifconfig=ifconfig_out.MACOSX)
         interfaces = parser.interfaces
         eq_(interfaces['en0']['ether'], '1a:2b:3c:4d:5e:6f')
         eq_(interfaces['en0']['inet'], '192.168.0.1')
@@ -61,5 +63,10 @@ class IfcfgTestCase(unittest.TestCase):
         eq_(interfaces['en0']['netmask'], '255.255.255.0')
 
     def test_default_interface(self):
-        res = ifcfg.default_interface()
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = ifcfg.get_parser_class()
+        route_output = ifconfig_out.ROUTE_OUTPUT
+        res = ifcfg.default_interface(
+            ifconfig=ifconfig_out.LINUX3, route_output=route_output
+        )
         ok_(res)

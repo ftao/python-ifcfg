@@ -56,3 +56,12 @@ lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
 	inet 127.0.0.1 netmask 0xff000000
 	inet6 ::1 prefixlen 128
 """  # noqa
+
+
+ROUTE_OUTPUT = """
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.1.1     0.0.0.0         UG    600    0        0 eth0
+169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 eth0
+192.168.1.0     0.0.0.0         255.255.255.0   U     600    0        0 eth0
+"""
