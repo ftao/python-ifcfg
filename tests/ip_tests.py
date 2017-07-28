@@ -33,5 +33,8 @@ class IpTestCase(IfcfgTestCase):
     def test_default_interface(self):
         ifcfg.distro = 'Linux'
         ifcfg.Parser = UnixIPParser
-        res = ifcfg.default_interface(ifconfig=ip_out.LINUX)
+        res = ifcfg.default_interface(
+            ifconfig=ip_out.LINUX,
+            route_output=ip_out.ROUTE_OUTPUT
+        )
         ok_(res)

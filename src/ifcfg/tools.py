@@ -18,7 +18,7 @@ def minimal_logger(name):
     return log
 
 def exec_cmd(cmd_args):
-    proc = Popen(cmd_args, stdout=PIPE, stderr=PIPE)
+    proc = Popen(cmd_args, stdout=PIPE, stderr=PIPE, shell=True)
     (stdout, stderr) = proc.communicate()
     proc.wait()
     stdout = stdout.decode("utf-8")

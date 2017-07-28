@@ -2,6 +2,7 @@ import os
 import platform
 from . import tools
 from . import exc
+from . import parser
 
 __version__ = "0.11dev0"
 
@@ -18,19 +19,21 @@ def get_parser_class():
     """
     global distro
     if distro == 'Linux':
-            from .parser import LinuxParser
-            Parser = LinuxParser
+        Parser = parser.LinuxParser
     elif distro in ['Darwin', 'MacOSX']:
-        from .parser import MacOSXParser
-        Parser = MacOSXParser
+        Parser = parser.MacOSXParser
+    elif distro in ['win32', 'cygwin']:
+        # For some strange reason, Windows will always be win32, see:
+        # https://stackoverflow.com/a/2145582/405682
+        Parser = parser.WindowsParser
     else:
         raise exc.IfcfgParserError("Unknown distro type '%s'." % distro)
     Log.debug("Distro detected as '%s'" % distro)
     Log.debug("Using '%s'" % Parser)
-    if not os.path.exists(Parser.get_command()[0]):
+
+    if isinstance(Parser, parser.UnixParser) and not os.path.exists(Parser.get_command()[0]):
         Log.debug("Could not find 'ifconfig' cmd, falling back to 'ip' cmd")
-        from .parser import UnixIPParser
-        Parser = UnixIPParser
+        Parser = parser.UnixIPParser
 
     return Parser
 

@@ -7,35 +7,14 @@ from .tools import exec_cmd, hex2dotted, minimal_logger
 Log = minimal_logger(__name__)
 
 
-class UnixParser(object):
-
-    def __init__(self, *args, **kw):
+class Parser:
+    """
+    Main parser class interface
+    """
+    def __init__(self, ifconfig=None):
         self._interfaces = {}
-        self.ifconfig_data = kw.get('ifconfig', None)
+        self.ifconfig_data = ifconfig
         self.parse(self.ifconfig_data)
-
-    @classmethod
-    def get_command(cls):
-        ifconfig_cmd = 'ifconfig'
-        for path in ['/sbin', '/usr/sbin', '/bin', '/usr/bin']:
-            if os.path.exists(os.path.join(path, ifconfig_cmd)):
-                ifconfig_cmd = os.path.join(path, ifconfig_cmd)
-                break
-        return [ifconfig_cmd, '-a']
-
-    @classmethod
-    def get_patterns(cls):
-        return [
-            '(?P<device>^[a-zA-Z0-9]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
-            '.*(inet )(?P<inet>[^\s]*).*',
-            '.*(inet6 )(?P<inet6>[^\s]*).*',
-            '.*(broadcast )(?P<broadcast>[^\s]*).*',
-            '.*(netmask )(?P<netmask>[^\s]*).*',
-            '.*(ether )(?P<ether>[^\s]*).*',
-            '.*(prefixlen )(?P<prefixlen>[^\s]*).*',
-            '.*(scopeid )(?P<scopeid>[^\s]*).*',
-            '.*(ether )(?P<ether>[^\s]*).*',
-        ]
 
     def parse(self, ifconfig=None):  # noqa: max-complexity=12
         """
@@ -108,6 +87,77 @@ class UnixParser(object):
                     interfaces[device]['hostname'] = None
 
         return interfaces
+
+    @classmethod
+    def get_command(cls):
+        raise NotImplementedError()
+
+    @classmethod
+    def get_patterns(cls):
+        raise NotImplementedError()
+
+    @property
+    def interfaces(self):
+        raise NotImplementedError()
+
+    @property
+    def default_interface(self):
+        raise NotImplementedError()
+
+
+class WindowsParser(Parser):
+
+    @classmethod
+    def get_command(cls):
+        return ['ipconfig', '/all']
+
+    @classmethod
+    def get_patterns(cls):
+        return [
+            '(?P<device>^[a-zA-Z0-9]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
+            '.*(inet )(?P<inet>[^\s]*).*',
+            '.*(inet6 )(?P<inet6>[^\s]*).*',
+            '.*(broadcast )(?P<broadcast>[^\s]*).*',
+            '.*(netmask )(?P<netmask>[^\s]*).*',
+            '.*(ether )(?P<ether>[^\s]*).*',
+            '.*(prefixlen )(?P<prefixlen>[^\s]*).*',
+            '.*(scopeid )(?P<scopeid>[^\s]*).*',
+            '.*(ether )(?P<ether>[^\s]*).*',
+        ]
+
+    @property
+    def interfaces(self):
+        """
+        Returns the full interfaces dictionary.
+
+        """
+        return self._interfaces
+
+
+class UnixParser(Parser):
+
+    @classmethod
+    def get_command(cls):
+        ifconfig_cmd = 'ifconfig'
+        for path in ['/sbin', '/usr/sbin', '/bin', '/usr/bin']:
+            if os.path.exists(os.path.join(path, ifconfig_cmd)):
+                ifconfig_cmd = os.path.join(path, ifconfig_cmd)
+                break
+        return [ifconfig_cmd, '-a']
+
+    @classmethod
+    def get_patterns(cls):
+        return [
+            '(?P<device>^[a-zA-Z0-9]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
+            '.*(inet )(?P<inet>[^\s]*).*',
+            '.*(inet6 )(?P<inet6>[^\s]*).*',
+            '.*(broadcast )(?P<broadcast>[^\s]*).*',
+            '.*(netmask )(?P<netmask>[^\s]*).*',
+            '.*(ether )(?P<ether>[^\s]*).*',
+            '.*(prefixlen )(?P<prefixlen>[^\s]*).*',
+            '.*(scopeid )(?P<scopeid>[^\s]*).*',
+            '.*(ether )(?P<ether>[^\s]*).*',
+        ]
 
     @property
     def interfaces(self):

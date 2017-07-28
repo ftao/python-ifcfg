@@ -23,3 +23,11 @@ LINUX = """1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN g
 6: wwp0s29u1u4i6: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000
     link/ether a0:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff
 """
+
+ROUTE_OUTPUT = """
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.1.1     0.0.0.0         UG    600    0        0 eth0
+169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 eth0
+192.168.1.0     0.0.0.0         255.255.255.0   U     600    0        0 eth0
+"""
