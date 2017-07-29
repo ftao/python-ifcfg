@@ -27,9 +27,5 @@ install:
 script:
   - tox -e $TOXENV
 
-notifications:
-  irc:
-    - "irc.freenode.org#django-wiki"
-
 after_success:
   - codecov
