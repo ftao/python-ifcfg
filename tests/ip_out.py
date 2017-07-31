@@ -27,7 +27,7 @@ LINUX = """1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN g
 ROUTE_OUTPUT = """
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
-0.0.0.0         192.168.1.1     0.0.0.0         UG    600    0        0 eth0
-169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 eth0
-192.168.1.0     0.0.0.0         255.255.255.0   U     600    0        0 eth0
+0.0.0.0         192.168.1.1     0.0.0.0         UG    600    0        0 wlp3s0
+169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 wlp3s0
+192.168.12.0     0.0.0.0         255.255.255.0   U     600    0        0 wlp3s0
 """

@@ -32,25 +32,30 @@ class Parser:
         self.ifconfig_data = ifconfig
         cur = None
         all_keys = []
-
+        patterns = self.get_patterns()
         for line in self.ifconfig_data.splitlines():
-            for pattern in self.get_patterns():
-                m = re.match(pattern, line)
-                if m:
-                    groupdict = m.groupdict()
-                    # Special treatment to trigger which interface we're
-                    # setting for if 'device' is in the line.  Presumably the
-                    # device of the interface is within the first line of the
-                    # device block.
-                    if 'device' in groupdict:
-                        cur = groupdict['device']
-                        if cur not in self._interfaces:
-                            self._interfaces[cur] = {}
+            for pattern in patterns:
+                m = re.match(pattern, line, re.MULTILINE)
+                if not m:
+                    continue
+                groupdict = m.groupdict()
+                # Special treatment to trigger which interface we're
+                # setting for if 'device' is in the line.  Presumably the
+                # device of the interface is within the first line of the
+                # device block.
+                if 'device' in groupdict:
+                    cur = groupdict['device']
+                    if cur not in self._interfaces:
+                        self._interfaces[cur] = {}
+                elif cur is None:
+                    raise RuntimeError(
+                        "Got results that don't belong to a device"
+                    )
 
-                    for key in groupdict:
-                        if key not in all_keys:
-                            all_keys.append(key)
-                        self._interfaces[cur][key] = groupdict[key]
+                for key in groupdict:
+                    if key not in all_keys:
+                        all_keys.append(key)
+                    self._interfaces[cur][key] = groupdict[key]
 
         # fix it up
         self._interfaces = self.alter(self._interfaces)
@@ -62,7 +67,6 @@ class Parser:
                     self._interfaces[device][key] = None
                 if type(device_dict[key]) == str:
                     self._interfaces[device][key] = device_dict[key].lower()
-
 
     def alter(self, interfaces):
         """
@@ -83,7 +87,7 @@ class Parser:
                 try:
                     host = socket.gethostbyaddr(device_dict['inet'])[0]
                     interfaces[device]['hostname'] = host
-                except socket.herror:
+                except (socket.herror, socket.gaierror):
                     interfaces[device]['hostname'] = None
 
         return interfaces
@@ -114,6 +118,11 @@ class WindowsParser(Parser):
     @classmethod
     def get_patterns(cls):
         return [
+            r"^(?P<device>\w.+):",
+            r"^   IPv4 Address. . . . . . . . . . . : (?P<inet>[^\s\(]+)",
+            r"^   Physical Address. . . . . . . . . : (?P<ether>[ABCDEF\d-]+)",
+        ]
+        return [
             '(?P<device>^[a-zA-Z0-9]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
             '.*(inet )(?P<inet>[^\s]*).*',
             '.*(inet6 )(?P<inet6>[^\s]*).*',
@@ -132,6 +141,14 @@ class WindowsParser(Parser):
 
         """
         return self._interfaces
+
+    def alter(self, interfaces):
+        interfaces = Parser.alter(self, interfaces)
+        # fixup some things
+        for device, device_dict in interfaces.items():
+            if 'ether' in device_dict:
+                interfaces[device]['ether'] = device_dict['ether'].replace('-', ':')
+        return interfaces
 
 
 class UnixParser(Parser):
@@ -194,7 +211,6 @@ class UnixParser(Parser):
         Returns the default interface device.
         """
         return self._default_interface()
-
 
 class LinuxParser(UnixParser):
     @classmethod

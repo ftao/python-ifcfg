@@ -27,6 +27,7 @@ class IfcfgTestCase(IfcfgTestCase):
         ifcfg.Parser = ifcfg.get_parser_class()
         parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX)
         interfaces = parser.interfaces
+        self.assertEqual(len(interfaces.keys()), 2)
         eq_(interfaces['eth0']['ether'], '1a:2b:3c:4d:5e:6f')
         eq_(interfaces['eth0']['inet'], '192.168.0.1')
         eq_(interfaces['eth0']['broadcast'], '192.168.0.255')
@@ -37,6 +38,7 @@ class IfcfgTestCase(IfcfgTestCase):
         ifcfg.Parser = ifcfg.get_parser_class()
         parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX2)
         interfaces = parser.interfaces
+        self.assertEqual(len(interfaces.keys()), 2)
         eq_(interfaces['eth0']['ether'], '1a:2b:3c:4d:5e:6f')
         eq_(interfaces['eth0']['inet'], '192.168.0.1')
         eq_(interfaces['eth0']['broadcast'], '192.168.0.255')
@@ -47,6 +49,7 @@ class IfcfgTestCase(IfcfgTestCase):
         ifcfg.Parser = ifcfg.get_parser_class()
         parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX3)
         interfaces = parser.interfaces
+        self.assertEqual(len(interfaces.keys()), 2)
         eq_(interfaces['eth0']['ether'], '1a:2b:3c:4d:5e:6f')
         eq_(interfaces['eth0']['inet'], '192.168.0.1')
         eq_(interfaces['eth0']['broadcast'], '192.168.0.255')
@@ -57,6 +60,7 @@ class IfcfgTestCase(IfcfgTestCase):
         ifcfg.Parser = ifcfg.get_parser_class()
         parser = ifcfg.get_parser(ifconfig=ifconfig_out.MACOSX)
         interfaces = parser.interfaces
+        self.assertEqual(len(interfaces.keys()), 2)
         eq_(interfaces['en0']['ether'], '1a:2b:3c:4d:5e:6f')
         eq_(interfaces['en0']['inet'], '192.168.0.1')
         eq_(interfaces['en0']['broadcast'], '192.168.0.255')
