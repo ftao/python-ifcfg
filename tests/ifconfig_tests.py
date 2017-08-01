@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import ifcfg
+from ifcfg.parser import NullParser
 from nose.tools import eq_, ok_, raises
 
 from . import ifconfig_out
@@ -17,10 +18,10 @@ class IfcfgTestCase(IfcfgTestCase):
         res = len(interfaces) > 0
         ok_(res)
 
-    @raises(ifcfg.exc.IfcfgParserError)
     def test_unknown(self):
         ifcfg.distro = 'Bogus'
         ifcfg.Parser = ifcfg.get_parser_class()
+        self.assertTrue(issubclass(ifcfg.Parser, NullParser))
 
     @raises(RuntimeError)
     def test_illegal(self):

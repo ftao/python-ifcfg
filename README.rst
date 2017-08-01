@@ -99,6 +99,9 @@ Windows compatibility.
 * IPv6 addresses are now stored in a list.
 * Removed prefixlen, as it should be added to one IPv6 address, not the
   interface
+* Allow ``ifcfg`` to be imported despite whether or not the OS system is
+  recognized.
+* Remove ``ifcfg.exc`` module
 
 
 0.10.1

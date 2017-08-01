@@ -141,6 +141,28 @@ class Parser(object):
         raise NotImplementedError()
 
 
+class NullParser(Parser):
+    """
+    Doesn't do anything, useful to maintain internal interfaces in case we
+    don't want to do anything (because we haven't determined the OS)
+    """
+
+    def __init__(self, ifconfig=None):
+        self._interfaces = {}
+        self.ifconfig_data = ifconfig
+
+    def parse(self, ifconfig=None):
+        raise NotImplementedError()
+
+    @property
+    def interfaces(self):
+        return []
+
+    @property
+    def default_interface(self):
+        return None
+
+
 class WindowsParser(Parser):
 
     @classmethod
