@@ -215,7 +215,6 @@ class UnixParser(Parser):
             '.*broadcast (?P<broadcast>[^\s]*).*',
             '.*netmask (?P<netmask>[^\s]*).*',
             '.*ether (?P<ether>[^\s]*).*',
-            '.*scopeid (?P<scopeid>[^\s]*).*',
         ]
 
     @property
@@ -266,7 +265,6 @@ class LinuxParser(UnixParser):
             '.*(P-t-P:)(?P<ptp>[^\s]*).*',
             '.*(Bcast:)(?P<broadcast>[^\s]*).*',
             '.*(Mask:)(?P<netmask>[^\s]*).*',
-            '.*(Scope:)(?P<scopeid>[^\s]*).*',
             '.*(RX bytes:)(?P<rxbytes>\d+).*',
             '.*(TX bytes:)(?P<txbytes>\d+).*',
         ]
