@@ -179,3 +179,30 @@ Tunnel adapter LAN-forbindelse* 13:
    NetBIOS over Tcpip. . . . . . . . : Disabled
 
 """
+
+
+WINDOWS_7_VM = """
+Windows IP Configuration
+
+
+Ethernet adapter Local Area Connection 2:
+
+   Connection-specific DNS Suffix  . : lan
+   Link-local IPv6 Address . . . . . : fe80::cad:9321:168e:83e3%13
+   IPv4 Address. . . . . . . . . . . : 10.0.2.15
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 10.0.2.2
+
+Tunnel adapter isatap.lan:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : lan
+
+Tunnel adapter Teredo Tunneling Pseudo-Interface:
+
+   Connection-specific DNS Suffix  . :
+   IPv6 Address. . . . . . . . . . . : 2001:0:5ef5:79fb:2002:2dbb:f5ff:fdf0
+   Link-local IPv6 Address . . . . . : fe80::2002:2dbb:f5ff:fdf0%14
+   Default Gateway . . . . . . . . . : ::
+
+"""

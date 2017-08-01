@@ -153,7 +153,7 @@ class WindowsParser(Parser):
             r"^(?P<device>\w.+):",
             r"^   Physical Address. . . . . . . . . : (?P<ether>[ABCDEFabcdef\d-]+)",
             r"^   IPv4 Address. . . . . . . . . . . : (?P<inet>[^\s\(]+)",
-            r"^   IPv6 Address. . . . . . . . . . . : (?P<inet6>[ABCDEFabcdef\d:%]+)",
+            r"^   IPv6 Address. . . . . . . . . . . : (?P<inet6>[ABCDEFabcdef\d\:\%]+)",
         ]
 
     @property
@@ -168,7 +168,7 @@ class WindowsParser(Parser):
         interfaces = Parser.alter(self, interfaces)
         # fixup some things
         for device, device_dict in interfaces.items():
-            if 'ether' in device_dict:
+            if 'ether' in device_dict and interfaces[device]['ether']:
                 interfaces[device]['ether'] = device_dict['ether'].replace('-', ':')
         return interfaces
 

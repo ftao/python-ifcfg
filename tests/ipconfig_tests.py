@@ -18,7 +18,7 @@ class WindowsTestCase(IfcfgTestCase):
         ok_(res)
 
     def test_windows10(self):
-        ifcfg.distro = "win32"
+        ifcfg.distro = "Windows"
         ifcfg.Parser = ifcfg.get_parser_class()
 
         self.assertTrue(issubclass(ifcfg.Parser, WindowsParser))
@@ -37,3 +37,25 @@ class WindowsTestCase(IfcfgTestCase):
 
         eq_(interfaces['Ethernet adapter Ethernet']['inet'], '192.168.1.2')
         eq_(interfaces['Ethernet adapter Ethernet']['ether'], '11:11:11:11:a1:fa')
+
+
+    def test_windows7vm(self):
+        ifcfg.distro = "Windows"
+        ifcfg.Parser = ifcfg.get_parser_class()
+
+        self.assertTrue(issubclass(ifcfg.Parser, WindowsParser))
+
+        parser = ifcfg.get_parser(ifconfig=ipconfig_out.WINDOWS_7_VM)
+        interfaces = parser.interfaces
+
+        self.assertIn("Ethernet adapter Local Area Connection 2", interfaces.keys())
+        self.assertIn("Tunnel adapter isatap.lan", interfaces.keys())
+        self.assertIn("Tunnel adapter Teredo Tunneling Pseudo-Interface", interfaces.keys())
+
+        self.assertEqual(len(interfaces.keys()), 3)
+
+        eq_(interfaces['Ethernet adapter Local Area Connection 2']['inet'], '10.0.2.15')
+        self.assertEqual(
+            len(interfaces['Ethernet adapter Local Area Connection 2']['inet6']),
+            0
+        )
