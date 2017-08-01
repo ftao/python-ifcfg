@@ -7,7 +7,7 @@ from . import tools
 from . import exc
 from . import parser
 
-__version__ = "0.11dev0"
+__version__ = "0.11b1"
 
 Log = tools.minimal_logger(__name__)
 
@@ -25,7 +25,7 @@ def get_parser_class():
         Parser = parser.LinuxParser
     elif distro in ['Darwin', 'MacOSX']:
         Parser = parser.MacOSXParser
-    elif distro in ['win32', 'cygwin']:
+    elif distro == 'Windows':
         # For some strange reason, Windows will always be win32, see:
         # https://stackoverflow.com/a/2145582/405682
         Parser = parser.WindowsParser
