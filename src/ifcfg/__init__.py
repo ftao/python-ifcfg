@@ -7,7 +7,7 @@ from . import tools
 from . import exc
 from . import parser
 
-__version__ = "0.11b1"
+__version__ = "0.11b2"
 
 Log = tools.minimal_logger(__name__)
 
