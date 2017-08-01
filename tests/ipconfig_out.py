@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 # This example contains a bunch of virtual devices and one configured ethernet
 # device. The unconfigured devices should not figure in parsed results.

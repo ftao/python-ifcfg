@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 class IfcfgError(Exception):
     """Generic Ifcfg Errors."""

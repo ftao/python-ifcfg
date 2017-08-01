@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import os
 import re
 import socket
@@ -7,7 +10,7 @@ from .tools import exec_cmd, hex2dotted, minimal_logger
 Log = minimal_logger(__name__)
 
 
-class Parser:
+class Parser(object):
     """
     Main parser class interface
     """
@@ -65,7 +68,7 @@ class Parser:
             for device, device_dict in self._interfaces.items():
                 if key not in device_dict:
                     self._interfaces[device][key] = None
-                if type(device_dict[key]) == str:
+                if hasattr(device_dict[key], 'lower'):
                     self._interfaces[device][key] = device_dict[key].lower()
 
     def alter(self, interfaces):

@@ -1,5 +1,5 @@
-"""Tests for Ifcfg."""
-
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 import ifcfg
 from nose.tools import eq_, ok_, raises

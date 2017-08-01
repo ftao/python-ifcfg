@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 LINUX2 = """
 eth0      Link encap:Ethernet  HWaddr 1a:2b:3c:4d:5e:6f
