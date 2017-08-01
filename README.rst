@@ -96,6 +96,9 @@ Windows compatibility.
  * All strings are UTF-8, also in Py 2.7
  * Only cross-platform features are now guaranteed to be in the result set:
    ``['inet', 'ether', 'inet6', 'netmask']``
+ * IPv6 addresses are now stored in a list.
+ * Removed prefixlen, as it should be added to one IPv6 address, not the
+   interface
 
 
 0.10.1

@@ -11,7 +11,12 @@ Log = minimal_logger(__name__)
 
 
 #: These will always be present for each device (even if they are None)
-MANDATORY_DEVICE_KEYS = ['inet', 'ether', 'inet6', 'netmask']
+DEVICE_PROPERTY_DEFAULTS = {
+    'inet': None,
+    'ether': None,
+    'inet6': "LIST",  # Because lists are mutable
+    'netmask': None,
+}
 
 
 class Parser(object):
@@ -22,6 +27,16 @@ class Parser(object):
         self._interfaces = {}
         self.ifconfig_data = ifconfig
         self.parse(self.ifconfig_data)
+
+    def add_device(self, device_name):
+        if device_name in self._interfaces:
+            raise RuntimeError("Device {} already added".format(device_name))
+        self._interfaces[device_name] = {}
+        for key, value in DEVICE_PROPERTY_DEFAULTS.items():
+            if value == "LIST":
+                self._interfaces[device_name][key] = []
+            else:
+                self._interfaces[device_name][key] = value
 
     def parse(self, ifconfig=None):  # noqa: max-complexity=12
         """
@@ -41,7 +56,7 @@ class Parser(object):
         patterns = self.get_patterns()
         for line in self.ifconfig_data.splitlines():
             for pattern in patterns:
-                m = re.match(pattern, line, re.MULTILINE)
+                m = re.match(pattern, line)
                 if not m:
                     continue
                 groupdict = m.groupdict()
@@ -51,15 +66,29 @@ class Parser(object):
                 # device block.
                 if 'device' in groupdict:
                     cur = groupdict['device']
-                    if cur not in self._interfaces:
-                        self._interfaces[cur] = {}
+                    self.add_device(cur)
                 elif cur is None:
                     raise RuntimeError(
                         "Got results that don't belong to a device"
                     )
 
-                for key in groupdict:
-                    self._interfaces[cur][key] = groupdict[key]
+                for k, v in groupdict.items():
+                    if k in self._interfaces[cur]:
+                        if self._interfaces[cur][k] is None:
+                            self._interfaces[cur][k] = v
+                        elif hasattr(self._interfaces[cur][k], 'append'):
+                            self._interfaces[cur][k].append(v)
+                        else:
+                            raise RuntimeError(
+                                "Tried to add {}={} multiple times to {}, it was already: {}".format(
+                                    k,
+                                    v,
+                                    cur,
+                                    self._interfaces[cur][k]
+                                )
+                            )
+                    else:
+                        self._interfaces[cur][k] = v
 
         # fix it up
         self._interfaces = self.alter(self._interfaces)
@@ -79,20 +108,19 @@ class Parser(object):
         """
         # fixup some things
         for device, device_dict in interfaces.items():
-            if 'inet' in device_dict:
+            if 'inet' in device_dict and not device_dict['inet'] is None:
                 try:
                     host = socket.gethostbyaddr(device_dict['inet'])[0]
                     interfaces[device]['hostname'] = host
                 except (socket.herror, socket.gaierror):
                     interfaces[device]['hostname'] = None
 
+            # To be sure that hex values and similar are always consistent, we
+            # return everything in lowercase. For instance, Windows writes
+            # MACs in upper-case.
             for key, device_item in device_dict.items():
                 if hasattr(device_item, 'lower'):
                     interfaces[device][key] = device_dict[key].lower()
-
-            for key in MANDATORY_DEVICE_KEYS:
-                if key not in device_dict:
-                    interfaces[device][key] = None
 
         return interfaces
 
@@ -125,7 +153,7 @@ class WindowsParser(Parser):
             r"^(?P<device>\w.+):",
             r"^   Physical Address. . . . . . . . . : (?P<ether>[ABCDEFabcdef\d-]+)",
             r"^   IPv4 Address. . . . . . . . . . . : (?P<inet>[^\s\(]+)",
-            r"^   IPv6 Address. . . . . . . . . . . : (?P<inet6>[ABCDEFabcdef\d-]+)",
+            r"^   IPv6 Address. . . . . . . . . . . : (?P<inet6>[ABCDEFabcdef\d:%]+)",
         ]
 
     @property
@@ -160,14 +188,12 @@ class UnixParser(Parser):
     def get_patterns(cls):
         return [
             '(?P<device>^[a-zA-Z0-9]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
-            '.*(inet )(?P<inet>[^\s]*).*',
-            '.*(inet6 )(?P<inet6>[^\s]*).*',
-            '.*(broadcast )(?P<broadcast>[^\s]*).*',
-            '.*(netmask )(?P<netmask>[^\s]*).*',
-            '.*(ether )(?P<ether>[^\s]*).*',
-            '.*(prefixlen )(?P<prefixlen>[^\s]*).*',
-            '.*(scopeid )(?P<scopeid>[^\s]*).*',
-            '.*(ether )(?P<ether>[^\s]*).*',
+            '.*inet\s+(?P<inet>[\d\.]+).*',
+            '.*inet6\s+(?P<inet6>[\d\:abcdef]+).*',
+            '.*broadcast (?P<broadcast>[^\s]*).*',
+            '.*netmask (?P<netmask>[^\s]*).*',
+            '.*ether (?P<ether>[^\s]*).*',
+            '.*scopeid (?P<scopeid>[^\s]*).*',
         ]
 
     @property
@@ -207,13 +233,14 @@ class UnixParser(Parser):
         return self._default_interface()
 
 class LinuxParser(UnixParser):
+
     @classmethod
     def get_patterns(cls):
         return super(LinuxParser, cls).get_patterns() + [
             '(?P<device>^[a-zA-Z0-9:]+)(.*)Link encap:(.*).*',
             '(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
-            '.*(inet addr:)(?P<inet>[^\s]*).*',
-            '.*(inet6 addr: )(?P<inet6>[^\s\/]*/(?P<prefixlen>[\d]*)).*',
+            '.*(inet addr:\s*)(?P<inet>[^\s]+).*',
+            '.*(inet6 addr:\s*)(?P<inet6>[^\s\/]+)',
             '.*(P-t-P:)(?P<ptp>[^\s]*).*',
             '.*(Bcast:)(?P<broadcast>[^\s]*).*',
             '.*(Mask:)(?P<netmask>[^\s]*).*',
@@ -244,7 +271,7 @@ class UnixIPParser(UnixParser):
     def get_patterns(cls):
         return [
             '\s*[0-9]+:\s+(?P<device>[a-zA-Z0-9]+):.*mtu (?P<mtu>.*)',
-            '.*(inet )(?P<inet>[^/]+).*',
+            '.*(inet\s)(?P<inet>[\d\.]+)',
             '.*(inet6 )(?P<inet6>[^/]*).*',
             '.*(ether )(?P<ether>[^\s]*).*',
             '.*inet\s.*(brd )(?P<broadcast>[^\s]*).*',
@@ -261,11 +288,10 @@ class MacOSXParser(UnixParser):
             '.*(media: )(?P<media>.*)',
         ]
 
-    def parse(self, *args, **kw):
-        super(MacOSXParser, self).parse(*args, **kw)
-
+    def alter(self, interfaces):
+        interfaces = super(MacOSXParser, self).alter(interfaces)
         # fix up netmask address for mac
-        for device, device_dict in self.interfaces.items():
+        for device, device_dict in interfaces.items():
             if device_dict['netmask'] is not None:
-                netmask = self.interfaces[device]['netmask']
-                self.interfaces[device]['netmask'] = hex2dotted(netmask)
+                interfaces[device]['netmask'] = hex2dotted(device_dict['netmask'])
+        return interfaces
