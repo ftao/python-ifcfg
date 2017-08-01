@@ -90,28 +90,28 @@ _________________
 This release seeks to clean up the codebase (sparingly!) and introduce
 Windows compatibility.
 
- * Removing ill-defined ``encoding`` keyword arg from ``ifcfg.get_parser``
- * Removed no-op Linux Kernel 2.x parsing and ``kernel`` keyword arg
- * Removed class ``ifcfg.IfcfgParser``, use ``UnixParser`` instead
- * All strings are UTF-8, also in Py 2.7
- * Only cross-platform features are now guaranteed to be in the result set:
-   ``['inet', 'ether', 'inet6', 'netmask']``
- * IPv6 addresses are now stored in a list.
- * Removed prefixlen, as it should be added to one IPv6 address, not the
-   interface
+* Removing ill-defined ``encoding`` keyword arg from ``ifcfg.get_parser``
+* Removed no-op Linux Kernel 2.x parsing and ``kernel`` keyword arg
+* Removed class ``ifcfg.IfcfgParser``, use ``UnixParser`` instead
+* All strings are UTF-8, also in Py 2.7
+* Only cross-platform features are now guaranteed to be in the result set:
+  ``['inet', 'ether', 'inet6', 'netmask']``
+* IPv6 addresses are now stored in a list.
+* Removed prefixlen, as it should be added to one IPv6 address, not the
+  interface
 
 
 0.10.1
-____
+______
 
- * Fixed encoding issues, preventing ``default_interface`` to be detected
+* Fixed encoding issues, preventing ``default_interface`` to be detected
 
 
 0.10
 ____
 
- * Support for Unix systems w/o ``ifconfig``, for instance newer Ubuntu/Debian
- * Refactored to use  ``src/`` hierarchy
+* Support for Unix systems w/o ``ifconfig``, for instance newer Ubuntu/Debian
+* Refactored to use  ``src/`` hierarchy
 
 
 
