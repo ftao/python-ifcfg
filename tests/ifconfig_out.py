@@ -44,6 +44,14 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 16436
 
 LINUX = LINUX3
 
+
+# Something out of order that we cannot parse
+ILLEGAL_OUTPUT = """
+        inet 192.168.0.1  netmask 255.255.255.0  broadcast 192.168.0.255
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.0.1  netmask 255.255.255.0  broadcast 192.168.0.255
+"""
+
 MACOSX = """
 en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
 	options=2b<RXCSUM,TXCSUM,VLAN_HWTAGGING,TSO4>

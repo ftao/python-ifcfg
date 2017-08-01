@@ -56,7 +56,6 @@ following:
             "scopeid": "0x20<link>"
         },
         "lo": {
-            "broadcast": null,
             "ether": null,
             "flags": "73<up,loopback,running> ",
             "hostname": "localhost",
@@ -78,8 +77,6 @@ following:
             "mtu": "1500",
             "name": "virbr0",
             "netmask": "255.255.255.0",
-            "prefixlen": null,
-            "scopeid": null
         }
     }
 
@@ -97,6 +94,8 @@ Windows compatibility.
  * Removed no-op Linux Kernel 2.x parsing and ``kernel`` keyword arg
  * Removed class ``ifcfg.IfcfgParser``, use ``UnixParser`` instead
  * All strings are UTF-8, also in Py 2.7
+ * Only cross-platform features are now guaranteed to be in the result set:
+   ``['inet', 'ether', 'inet6', 'netmask']``
 
 
 0.10.1

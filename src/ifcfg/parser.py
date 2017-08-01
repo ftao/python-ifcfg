@@ -10,6 +10,10 @@ from .tools import exec_cmd, hex2dotted, minimal_logger
 Log = minimal_logger(__name__)
 
 
+#: These will always be present for each device (even if they are None)
+MANDATORY_DEVICE_KEYS = ['inet', 'ether', 'inet6', 'netmask']
+
+
 class Parser(object):
     """
     Main parser class interface
@@ -34,7 +38,6 @@ class Parser(object):
             ifconfig, __, __ = exec_cmd(self.get_command())
         self.ifconfig_data = ifconfig
         cur = None
-        all_keys = []
         patterns = self.get_patterns()
         for line in self.ifconfig_data.splitlines():
             for pattern in patterns:
@@ -56,20 +59,10 @@ class Parser(object):
                     )
 
                 for key in groupdict:
-                    if key not in all_keys:
-                        all_keys.append(key)
                     self._interfaces[cur][key] = groupdict[key]
 
         # fix it up
         self._interfaces = self.alter(self._interfaces)
-
-        # standardize
-        for key in all_keys:
-            for device, device_dict in self._interfaces.items():
-                if key not in device_dict:
-                    self._interfaces[device][key] = None
-                if hasattr(device_dict[key], 'lower'):
-                    self._interfaces[device][key] = device_dict[key].lower()
 
     def alter(self, interfaces):
         """
@@ -92,6 +85,14 @@ class Parser(object):
                     interfaces[device]['hostname'] = host
                 except (socket.herror, socket.gaierror):
                     interfaces[device]['hostname'] = None
+
+            for key, device_item in device_dict.items():
+                if hasattr(device_item, 'lower'):
+                    interfaces[device][key] = device_dict[key].lower()
+
+            for key in MANDATORY_DEVICE_KEYS:
+                if key not in device_dict:
+                    interfaces[device][key] = None
 
         return interfaces
 
@@ -122,19 +123,9 @@ class WindowsParser(Parser):
     def get_patterns(cls):
         return [
             r"^(?P<device>\w.+):",
+            r"^   Physical Address. . . . . . . . . : (?P<ether>[ABCDEFabcdef\d-]+)",
             r"^   IPv4 Address. . . . . . . . . . . : (?P<inet>[^\s\(]+)",
-            r"^   Physical Address. . . . . . . . . : (?P<ether>[ABCDEF\d-]+)",
-        ]
-        return [
-            '(?P<device>^[a-zA-Z0-9]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
-            '.*(inet )(?P<inet>[^\s]*).*',
-            '.*(inet6 )(?P<inet6>[^\s]*).*',
-            '.*(broadcast )(?P<broadcast>[^\s]*).*',
-            '.*(netmask )(?P<netmask>[^\s]*).*',
-            '.*(ether )(?P<ether>[^\s]*).*',
-            '.*(prefixlen )(?P<prefixlen>[^\s]*).*',
-            '.*(scopeid )(?P<scopeid>[^\s]*).*',
-            '.*(ether )(?P<ether>[^\s]*).*',
+            r"^   IPv6 Address. . . . . . . . . . . : (?P<inet6>[ABCDEFabcdef\d-]+)",
         ]
 
     @property
@@ -258,9 +249,6 @@ class UnixIPParser(UnixParser):
             '.*(ether )(?P<ether>[^\s]*).*',
             '.*inet\s.*(brd )(?P<broadcast>[^\s]*).*',
             '.*(inet )[^/]+(?P<netmask>[/][0-9]+).*',
-            # '.*(prefixlen )(?P<prefixlen>[^\s]*).*',
-            # '.*(scopeid )(?P<scopeid>[^\s]*).*',
-            # '.*(ether )(?P<ether>[^\s]*).*',
         ]
 
 

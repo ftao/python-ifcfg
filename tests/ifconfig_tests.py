@@ -22,6 +22,12 @@ class IfcfgTestCase(IfcfgTestCase):
         ifcfg.distro = 'Bogus'
         ifcfg.Parser = ifcfg.get_parser_class()
 
+    @raises(RuntimeError)
+    def test_illegal(self):
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = ifcfg.get_parser_class()
+        ifcfg.get_parser(ifconfig=ifconfig_out.ILLEGAL_OUTPUT)
+
     def test_linux(self):
         ifcfg.distro = 'Linux'
         ifcfg.Parser = ifcfg.get_parser_class()
