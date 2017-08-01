@@ -4,10 +4,9 @@ from __future__ import unicode_literals
 import os
 import platform
 from . import tools
-from . import exc
 from . import parser
 
-__version__ = "0.11b2"
+__version__ = "0.11b4"
 
 Log = tools.minimal_logger(__name__)
 
@@ -30,7 +29,8 @@ def get_parser_class():
         # https://stackoverflow.com/a/2145582/405682
         Parser = parser.WindowsParser
     else:
-        raise exc.IfcfgParserError("Unknown distro type '%s'." % distro)
+        Parser = parser.NullParser
+        Log.error("Unknown distro type '%s'." % distro)
     Log.debug("Distro detected as '%s'" % distro)
     Log.debug("Using '%s'" % Parser)
 

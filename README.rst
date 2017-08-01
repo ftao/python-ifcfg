@@ -97,8 +97,11 @@ Windows compatibility.
 * Only cross-platform features are now guaranteed to be in the result set:
   ``['inet', 'ether', 'inet6', 'netmask']``
 * IPv6 addresses are now stored in a list.
-* Removed prefixlen, as it should be added to one IPv6 address, not the
+* Removed prefixlen and scopeid, as they should be added for each IPv6 address, not the
   interface
+* Allow ``ifcfg`` to be imported despite whether or not the OS system is
+  recognized.
+* Remove ``ifcfg.exc`` module
 
 
 0.10.1
