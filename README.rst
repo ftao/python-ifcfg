@@ -8,14 +8,9 @@ Python Ifconfig Wrapper for Unix/Linux/MacOSX
 .. image:: http://codecov.io/github/learningequality/python-ifcfg/coverage.svg?branch=master
   :target: http://codecov.io/github/learningequality/python-ifcfg?branch=master
 
-Ifcfg is a cross-platform (\*nix) library for parsing 'ifconfig' output
-in Python. It is useful for pulling information such as IP, Netmask, MAC
-Address, Hostname, etc.
-
-Some Limitations:
-
--  Targeted for Unix-like operating systems including Linux and Mac OSX
--  Relies on parsing ``ifconfig`` or ``ip address`` output
+Ifcfg is a cross-platform (Windows/Unix) library for parsing ``ifconfig`` and
+``ipconfig`` output in Python. It is useful for pulling information such as IP,
+Netmask, MAC Address, Hostname, etc.
 
 Usage
 -----
@@ -48,24 +43,20 @@ following:
             "flags": "4163<up,broadcast,running,multicast> ",
             "hostname": "derks-vm.local",
             "inet": "172.16.217.10",
-            "inet6": "fe80::20c:29ff:fe0c:da5d",
+            "inet6": ["fe80::20c:29ff:fe0c:da5d"],
             "mtu": "1500",
             "name": "eth0",
             "netmask": "255.255.255.0",
-            "prefixlen": "64",
-            "scopeid": "0x20<link>"
         },
         "lo": {
             "ether": null,
             "flags": "73<up,loopback,running> ",
             "hostname": "localhost",
             "inet": "127.0.0.1",
-            "inet6": "::1",
+            "inet6": ["::1"],
             "mtu": "16436",
             "name": "lo",
             "netmask": "255.0.0.0",
-            "prefixlen": "128",
-            "scopeid": "0x10<host>"
         },
         "virbr0": {
             "broadcast": "192.168.122.255",
@@ -73,7 +64,7 @@ following:
             "flags": "4099<up,broadcast,multicast> ",
             "hostname": "derks-vm.local",
             "inet": "192.168.122.1",
-            "inet6": null,
+            "inet6": [],
             "mtu": "1500",
             "name": "virbr0",
             "netmask": "255.255.255.0",
@@ -84,8 +75,8 @@ following:
 Release notes
 -------------
 
-0.11 (unreleased)
-_________________
+0.11b4
+______
 
 This release seeks to clean up the codebase (sparingly!) and introduce
 Windows compatibility.
