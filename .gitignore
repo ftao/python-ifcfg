@@ -18,6 +18,7 @@ pip-log.txt
 
 # Unit test / coverage reports
 .coverage
+.coverage.*
 .tox
 
 #Translations
@@ -28,3 +29,4 @@ pip-log.txt
 htmlcov
 coverage_html_report
 test.py
+.venv

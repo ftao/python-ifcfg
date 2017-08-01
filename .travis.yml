@@ -1,8 +1,31 @@
+sudo: false
+dist: trusty
+
+env: PIP_DOWNLOAD_CACHE="pip_cache"
+
 language: python
-before_script: ./utils/bootstrap.sh
-script: ./utils/run-tests.sh
-python:
-  - "2.6"
-  - "2.7"
-  - "3.1"
-  - "3.2"
+
+addons:
+  apt:
+    sources:
+      - deadsnakes
+    packages:
+      - python3.5
+      - python3.5-dev
+
+
+# See tox.ini for env list
+env:
+- TOXENV=py27
+- TOXENV=py34
+- TOXENV=py35
+- TOXENV=lint
+
+install:
+  - pip install -U pip codecov tox
+
+script:
+  - tox -e $TOXENV
+
+after_success:
+  - codecov

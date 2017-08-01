@@ -1,9 +1,0 @@
-[run]
-parallel = True
-include = ifcfg/*.py
-
-[report]
-ignore_errors = True
-
-[html]
-directory = coverage_html_report

@@ -1,30 +1,26 @@
-"""Tests for Ifcfg."""
-
-import unittest
-from nose.tools import ok_, eq_, raises
-from nose import SkipTest
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 import ifcfg
 from ifcfg.parser import UnixIPParser
+from nose.tools import eq_, ok_
+
 from . import ip_out
+from .base import IfcfgTestCase
 
 
-class IpTestCase(unittest.TestCase):
-    def setUp(self):
-        pass
-        
-    def tearDown(self):
-        pass
-        
+class IpTestCase(IfcfgTestCase):
+
     def test_ifcfg(self):
-        interfaces = ifcfg.interfaces()
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = UnixIPParser
+        interfaces = ifcfg.interfaces(ifconfig=ip_out.LINUX)
         res = len(interfaces) > 0
         ok_(res)
 
     def test_linux(self):
-        parser = ifcfg.get_parser(distro='Linux', kernel='4',
-                                  ifconfig=ip_out.LINUX,
-                                  parser=UnixIPParser)
+        ifcfg.Parser = UnixIPParser
+        parser = ifcfg.get_parser(ifconfig=ip_out.LINUX)
         interfaces = parser.interfaces
         # Unconnected interface
         eq_(interfaces['enp0s25']['ether'], 'a0:00:00:00:00:00')
@@ -36,5 +32,10 @@ class IpTestCase(unittest.TestCase):
         eq_(interfaces['wlp3s0']['netmask'], '/24')
 
     def test_default_interface(self):
-        res = ifcfg.default_interface()
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = UnixIPParser
+        res = ifcfg.default_interface(
+            ifconfig=ip_out.LINUX,
+            route_output=ip_out.ROUTE_OUTPUT
+        )
         ok_(res)

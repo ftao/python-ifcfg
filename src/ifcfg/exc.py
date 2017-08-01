@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 class IfcfgError(Exception):
     """Generic Ifcfg Errors."""
     def __init__(self, msg):
         self.msg = msg
-    
+
 class IfcfgParserError(IfcfgError):
     """Ifcfg Parsing Errors."""
     def __init__(self, *args, **kw):
