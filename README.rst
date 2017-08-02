@@ -1,5 +1,5 @@
-Python Ifconfig Wrapper for Unix/Linux/MacOSX
-=============================================
+Python cross-platform network interface discovery
+=================================================
 
 .. image:: https://badge.fury.io/py/ifcfg.svg
    :target: https://pypi.python.org/pypi/ifcfg/
