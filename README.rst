@@ -75,12 +75,14 @@ following:
 Release notes
 -------------
 
-0.11b4
+0.11b6
 ______
 
 This release seeks to clean up the codebase (sparingly!) and introduce
 Windows compatibility.
 
+* Add Windows compatible parsing of ``ipconfig`` output
+* Handle non-unicode terminals (Windows+Mac especially)
 * Removing ill-defined ``encoding`` keyword arg from ``ifcfg.get_parser``
 * Removed no-op Linux Kernel 2.x parsing and ``kernel`` keyword arg
 * Removed class ``ifcfg.IfcfgParser``, use ``UnixParser`` instead
@@ -93,6 +95,7 @@ Windows compatibility.
 * Allow ``ifcfg`` to be imported despite whether or not the OS system is
   recognized.
 * Remove ``ifcfg.exc`` module
+* Fix some interface names containing `:_-` characters on Linux (Sergej Vasiljev)
 
 
 0.10.1
