@@ -39,6 +39,39 @@ class WindowsTestCase(IfcfgTestCase):
         eq_(interfaces['Ethernet adapter Ethernet']['ether'], '11:11:11:11:a1:fa')
 
 
+    def test_windows10_w_2_ethernets(self):
+        ifcfg.distro = "Windows"
+        ifcfg.Parser = ifcfg.get_parser_class()
+
+        self.assertTrue(issubclass(ifcfg.Parser, WindowsParser))
+
+        parser = ifcfg.get_parser(
+            ifconfig=ipconfig_out.WINDOWS_10_WITH_2_ETHERNETS
+        )
+        interfaces = parser.interfaces
+
+        # Check that the first adapter is present
+        self.assertIn("Ethernet adapter Ethernet", interfaces.keys())
+
+        # Check that the second adapter is present
+        self.assertIn("Ethernet adapter Ethernet 2", interfaces.keys())
+
+        self.assertEqual(len(interfaces.keys()), 4)
+
+        # Check that properties of both adapters are correct
+
+        # Adapter 1
+        eq_(interfaces['Ethernet adapter Ethernet']['inet'], '10.0.2.15')
+        eq_(interfaces['Ethernet adapter Ethernet']['ether'], '08:00:27:cc:be:af')
+        eq_(interfaces['Ethernet adapter Ethernet']['inet6'], [])
+
+        # Adapter 2
+        eq_(interfaces['Ethernet adapter Ethernet 2']['inet'], '192.168.56.101')
+        eq_(interfaces['Ethernet adapter Ethernet 2']['ether'], '08:00:27:0d:9a:0b')
+        eq_(interfaces['Ethernet adapter Ethernet 2']['inet6'], [])
+
+
+
     def test_windows7vm(self):
         ifcfg.distro = "Windows"
         ifcfg.Parser = ifcfg.get_parser_class()
