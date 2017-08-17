@@ -75,7 +75,7 @@ following:
 Release notes
 -------------
 
-0.11b5
+0.11b6
 ______
 
 This release seeks to clean up the codebase (sparingly!) and introduce
@@ -95,6 +95,7 @@ Windows compatibility.
 * Allow ``ifcfg`` to be imported despite whether or not the OS system is
   recognized.
 * Remove ``ifcfg.exc`` module
+* Fix some interface names containing `:_-` characters on Linux (Sergej Vasiljev)
 
 
 0.10.1
