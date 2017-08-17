@@ -1,7 +1,9 @@
 """Tests for ifcfg.tools."""
 
+import locale
 import logging
 import os
+import sys
 import unittest
 
 import ifcfg
@@ -20,3 +22,13 @@ class IfcfgToolsTestCase(unittest.TestCase):
     def test_command(self):
         output, __, __ = exec_cmd("echo -n 'this is a test'")
         self.assertEqual(output, "this is a test")
+
+
+    @unittest.skipIf(sys.version[0] != '2',
+                     "Python 2 only supports non-unicode stuff")
+    def test_command_non_unicode(self):
+        getpreferredencoding_orig = locale.getpreferredencoding
+        locale.getpreferredencoding = lambda: "ISO-8859-1"
+        output, __, __ = exec_cmd("echo -n 'this is a test'")
+        self.assertEqual(output, "this is a test")
+        locale.getpreferredencoding = getpreferredencoding_orig

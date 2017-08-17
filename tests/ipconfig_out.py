@@ -206,3 +206,73 @@ Tunnel adapter Teredo Tunneling Pseudo-Interface:
    Default Gateway . . . . . . . . . : ::
 
 """
+
+
+WINDOWS_10_WITH_2_ETHERNETS = """
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : MSEDGEWIN10
+   Primary Dns Suffix  . . . . . . . :
+   Node Type . . . . . . . . . . . . : Hybrid
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+
+Ethernet adapter Ethernet:
+
+   Connection-specific DNS Suffix  . :
+   Description . . . . . . . . . . . : Intel(R) PRO/1000 MT Desktop Adapter
+   Physical Address. . . . . . . . . : 08-00-27-CC-BE-AF
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::e59b:7afd:78a6:d073%4(Preferred)
+   IPv4 Address. . . . . . . . . . . : 10.0.2.15(Preferred)
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Lease Obtained. . . . . . . . . . : jueves, 3 de agosto de 2017 1:00:44
+   Lease Expires . . . . . . . . . . : viernes, 4 de agosto de 2017 1:00:59
+   Default Gateway . . . . . . . . . : 10.0.2.2
+   DHCP Server . . . . . . . . . . . : 10.0.2.2
+   DHCPv6 IAID . . . . . . . . . . . : 34078759
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-1F-22-AC-9F-08-00-27-CC-BE-AF
+   DNS Servers . . . . . . . . . . . : 89.150.129.22
+                                       89.150.129.10
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+Ethernet adapter Ethernet 2:
+
+   Connection-specific DNS Suffix  . :
+   Description . . . . . . . . . . . : Intel(R) PRO/1000 MT Desktop Adapter #2
+   Physical Address. . . . . . . . . : 08-00-27-0D-9A-0B
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::99e0:2790:ba60:20e1%5(Preferred)
+   IPv4 Address. . . . . . . . . . . : 192.168.56.101(Preferred)
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Lease Obtained. . . . . . . . . . : jueves, 3 de agosto de 2017 1:00:44
+   Lease Expires . . . . . . . . . . : jueves, 3 de agosto de 2017 1:20:59
+   Default Gateway . . . . . . . . . :
+   DHCP Server . . . . . . . . . . . : 192.168.56.100
+   DHCPv6 IAID . . . . . . . . . . . : 151519271
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-1F-22-AC-9F-08-00-27-CC-BE-AF
+   DNS Servers . . . . . . . . . . . : fec0:0:0:ffff::1%1
+                                       fec0:0:0:ffff::2%1
+                                       fec0:0:0:ffff::3%1
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+Tunnel adapter isatap.{ADDEF65B-69BD-40F2-A0E6-4B67361ECE85}:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . :
+   Description . . . . . . . . . . . : Microsoft ISATAP Adapter
+   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+
+Tunnel adapter isatap.{BFDBE788-14F2-499A-9D83-CDCD34CDE463}:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . :
+   Description . . . . . . . . . . . : Microsoft ISATAP Adapter #2
+   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+"""

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import locale
 import logging
 import os
 from subprocess import PIPE, Popen
@@ -21,11 +22,15 @@ def minimal_logger(name):
     return log
 
 def exec_cmd(cmd_args):
-    proc = Popen(cmd_args, stdout=PIPE, stderr=PIPE, shell=True)
-    (stdout, stderr) = proc.communicate()
+    # Using `shell=True` because commands may be scripts
+    # Using `universal_newlines=True` because we want string output, not bytes
+    proc = Popen(cmd_args, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+    stdout, stderr = proc.communicate()
     proc.wait()
-    stdout = stdout.decode("utf-8")
-    stderr = stderr.decode("utf-8")
+    # If we aren't using UTF-8 on this system, then re-encode the string.
+    if locale.getpreferredencoding().lower() != "utf-8":
+        stdout = stdout.decode(locale.getpreferredencoding()).encode('utf-8')
+        stderr = stderr.decode(locale.getpreferredencoding()).encode('utf-8')
     return (stdout, stderr, proc.returncode)
 
 def hex2dotted(hex_num):
