@@ -20,7 +20,7 @@ Usage
     import ifcfg
     import json
 
-    for interface in ifcfg.interfaces:
+    for name, interface in ifcfg.interfaces().items():
         # do something with interface
         print interface['device']
         print interface['inet']
@@ -30,12 +30,12 @@ Usage
 
     default = ifcfg.default_interface()
 
-The output of 'ifcfg.interfaces' dumped to JSON looks something like the
+The output of 'ifcfg.interfaces()' dumped to JSON looks something like the
 following:
 
 ::
 
-    $ python test.py | python -mjson.tool
+    $ python -m ifcfg.cli | python -mjson.tool
     {
         "eth0": {
             "broadcast": "172.16.217.255",
