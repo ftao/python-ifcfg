@@ -3,10 +3,10 @@ Python cross-platform network interface discovery
 
 .. image:: https://badge.fury.io/py/ifcfg.svg
    :target: https://pypi.python.org/pypi/ifcfg/
-.. image:: https://travis-ci.org/learningequality/python-ifcfg.svg
-  :target: https://travis-ci.org/learningequality/python-ifcfg
-.. image:: http://codecov.io/github/learningequality/python-ifcfg/coverage.svg?branch=master
-  :target: http://codecov.io/github/learningequality/python-ifcfg?branch=master
+.. image:: https://travis-ci.org/ftao/python-ifcfg.svg
+  :target: https://travis-ci.org/ftao/python-ifcfg
+.. image:: http://codecov.io/github/ftao/python-ifcfg/coverage.svg?branch=master
+  :target: http://codecov.io/github/ftao/python-ifcfg?branch=master
 
 Ifcfg is a cross-platform (Windows/Unix) library for parsing ``ifconfig`` and
 ``ipconfig`` output in Python. It is useful for pulling information such as IP,
