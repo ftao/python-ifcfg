@@ -234,17 +234,13 @@ class UnixParser(Parser):
             lines = out.splitlines()
         else:
             lines = route_output.split("\n")
-        iface = ""
+
         for line in lines[2:]:
-            if str(line.split(" ")[0]) == '0.0.0.0':
-                iface = str(line.split()[-1])
-                break
-
-        for interface in self.interfaces.keys():
-            if interface == iface:
-                return self.interfaces[interface]
-
-        return None
+            line = line.split()
+            if '0.0.0.0' in line and \
+               'UG' in line:
+                iface = line[-1]
+                return self.interfaces.get(iface, None)
 
     @property
     def default_interface(self):
