@@ -78,7 +78,10 @@ Release notes
 0.11
 ____
 
-Moving from an idea that this is in Beta to a mentality that we will probably never actually keep up with all the various ways of detecting network properties for different systems.
+After 6 beta releases, we move on from an idea that this is beta software and instead consider
+it to be stable -- we will probably never actually keep up with all the various ways of detecting
+network properties for different systems. Anything that is incorrectly detected and can be updated,
+can also be implemented and shipped as a new patch release.
 
 So let's **ship early, ship often** instead.
 
