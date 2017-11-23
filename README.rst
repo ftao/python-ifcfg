@@ -75,8 +75,12 @@ following:
 Release notes
 -------------
 
-0.11b6
-______
+0.11
+____
+
+Moving from an idea that this is in Beta to a mentality that we will probably never actually keep up with all the various ways of detecting network properties for different systems.
+
+So let's **ship early, ship often** instead.
 
 This release seeks to clean up the codebase (sparingly!) and introduce
 Windows compatibility.
