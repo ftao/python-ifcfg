@@ -1,31 +1,18 @@
-sudo: false
 dist: trusty
-
-env: PIP_DOWNLOAD_CACHE="pip_cache"
 
 language: python
 
-addons:
-  apt:
-    sources:
-      - deadsnakes
-    packages:
-      - python3.5
-      - python3.5-dev
-
-
-# See tox.ini for env list
-env:
-- TOXENV=py27
-- TOXENV=py34
-- TOXENV=py35
-- TOXENV=lint
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
 
 install:
-  - pip install -U pip codecov tox
+  - pip install -U pip codecov tox tox-travis
 
 script:
-  - tox -e $TOXENV
+  - tox
 
 after_success:
   - codecov
