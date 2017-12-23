@@ -75,6 +75,12 @@ following:
 Release notes
 -------------
 
+0.12
+____
+
+* Fix encoding crashes on non-English Windows systems
+
+
 0.11
 ____
 
