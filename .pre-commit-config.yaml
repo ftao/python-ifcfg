@@ -1,3 +1,4 @@
+repos:
 -   repo: git://github.com/pre-commit/pre-commit-hooks
     sha: a11d9314b22d8f8c7556443875b731ef05965464
     hooks:
@@ -8,13 +9,8 @@
     -   id: debug-statements
     -   id: end-of-file-fixer
 -   repo: git://github.com/FalconSocial/pre-commit-python-sorter
-    sha: 5991d2aea26858d3c3538e0b4e09255b6b99413e
+    sha: b57843b0b874df1d16eb0bef00b868792cb245c2
     hooks:
     -   id: python-import-sorter
         args:
         - --silent-overwrite
--   repo: git://github.com/pre-commit/mirrors-eslint
-    sha: v3.14.0
-    hooks:
-    -   id: eslint
-        additional_dependencies: [ 'eslint', 'eslint-plugin-html', 'eslint-config-airbnb', 'eslint-plugin-import', 'eslint-plugin-jsx-a11y']
