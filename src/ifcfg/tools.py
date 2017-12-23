@@ -6,6 +6,8 @@ import logging
 import os
 from subprocess import PIPE, Popen
 
+system_encoding = locale.getpreferredencoding()
+
 
 def minimal_logger(name):
     log = logging.getLogger(name)
@@ -28,9 +30,14 @@ def exec_cmd(cmd_args):
     stdout, stderr = proc.communicate()
     proc.wait()
     # If we aren't using UTF-8 on this system, then re-encode the string.
-    if locale.getpreferredencoding().lower() != "utf-8":
-        stdout = stdout.decode(locale.getpreferredencoding()).encode('utf-8')
-        stderr = stderr.decode(locale.getpreferredencoding()).encode('utf-8')
+    if system_encoding.lower() != "utf-8":
+        # This is crazy, but seems that utf-8 encoded strings are dumped in
+        # Windows environments and need to firstly be encoded, then decoded and
+        # encoded again??
+        # https://github.com/learningequality/kolibri/issues/2994
+        # https://bugs.python.org/issue1602
+        stdout = stdout.encode("utf-8").decode(system_encoding, errors='replace')
+        stderr = stderr.encode("utf-8").decode(system_encoding, errors='replace')
     return (stdout, stderr, proc.returncode)
 
 def hex2dotted(hex_num):
