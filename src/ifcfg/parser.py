@@ -249,6 +249,7 @@ class UnixParser(Parser):
         """
         return self._default_interface()
 
+
 class LinuxParser(UnixParser):
 
     @classmethod
