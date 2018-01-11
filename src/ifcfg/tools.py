@@ -25,19 +25,18 @@ def minimal_logger(name):
 
 def exec_cmd(cmd_args):
     # Using `shell=True` because commands may be scripts
-    # Using `universal_newlines=True` because we want string output, not bytes
-    proc = Popen(cmd_args, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+    # Using `universal_newlines=False` so we do not choke on implicit decode
+    # errors of bytes that are invalid (happens on Windows)
+    # NB! Python 2 returns a string, Python 3 returns a bytestring
+    # https://github.com/ftao/python-ifcfg/issues/17
+    proc = Popen(cmd_args, stdout=PIPE, stderr=PIPE, universal_newlines=False, shell=True)
     stdout, stderr = proc.communicate()
     proc.wait()
-    # If we aren't using UTF-8 on this system, then re-encode the string.
-    if system_encoding.lower() != "utf-8":
-        # This is crazy, but seems that utf-8 encoded strings are dumped in
-        # Windows environments and need to firstly be encoded, then decoded and
-        # encoded again??
-        # https://github.com/learningequality/kolibri/issues/2994
-        # https://bugs.python.org/issue1602
-        stdout = stdout.encode("utf-8").decode(system_encoding, errors='replace')
-        stderr = stderr.encode("utf-8").decode(system_encoding, errors='replace')
+
+    # Decode returned strings according to system encoding
+    stdout = stdout.decode(system_encoding, errors='replace')
+    stderr = stderr.decode(system_encoding, errors='replace')
+
     return (stdout, stderr, proc.returncode)
 
 def hex2dotted(hex_num):
