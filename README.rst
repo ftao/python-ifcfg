@@ -78,8 +78,8 @@ Release notes
 0.13
 ____
 
-* Further crashes on non-English Windows systems
-* Known issue that localized Windows does not work: #81
+* Further crashes on non-English Windows systems #17
+* Known issue: Localized non-English Windows parsing does not work #18
 
 
 0.12
