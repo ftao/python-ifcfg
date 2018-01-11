@@ -75,6 +75,13 @@ following:
 Release notes
 -------------
 
+0.13
+____
+
+* Further crashes on non-English Windows systems
+* Known issue that localized Windows does not work: #81
+
+
 0.12
 ____
 
