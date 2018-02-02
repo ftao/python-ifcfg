@@ -75,6 +75,12 @@ following:
 Release notes
 -------------
 
+0.14
+____
+
+* Replace Python 2 syntax #21
+
+
 0.13
 ____
 
