@@ -269,6 +269,56 @@ class LinuxParser(UnixParser):
     def alter(self, interfaces):
         return interfaces
 
+class FreeBSDParser(Parser):
+    @classmethod
+    def get_command(cls):
+        ifconfig_cmd = 'ifconfig'
+        for path in ['/sbin', '/usr/sbin', '/bin', '/usr/bin']:
+            if os.path.exists(os.path.join(path, ifconfig_cmd)):
+                ifconfig_cmd = os.path.join(path, ifconfig_cmd)
+                break
+        return [ifconfig_cmd, '-a']
+
+    @classmethod
+    def get_patterns(cls):
+        return [
+            '(?P<device>^[a-zA-Z0-9_-]+):\sflags=\d+<(?P<flags>[A-Z,]+)>\smetric\s(?P<metric>\d)\smtu\s(?P<mtu>\d+)',
+            '.*(?<!nd6\s)options=[a-f0-9]+<(?P<options>[A-Z,_0-9]+)>.*',
+            '.*\s+ether\s(?P<ether>[0-9a-f:]+).*',
+            '.*\s+inet\s(?P<inet>[0-9.]+)\snetmask\s(?P<netmask>0x[0-9a-f]+)\sbroadcast\s(?P<broadcast>[0-9.]+).*',
+            '.*nd6 options=[a-f0-9]+<(?P<nd6_options>[A-Z,_0-9]+)>.*',
+            '.*media:\s(?P<media>.*)',
+            '.*status:\s(?P<status>.*).*',
+        ]
+
+    @property
+    def interfaces(self):
+        """
+        Returns the full interfaces dictionary.
+
+        """
+        return self._interfaces
+
+    def alter(self, interfaces):
+        for device, device_dict in interfaces.items():
+            if 'netmask' in device_dict and interfaces[device]['netmask']:
+                interfaces[device]['netmask'] = self._convert_hex_netmask_to_cidr(interfaces[device]['netmask'])
+            if 'flags' in device_dict and interfaces[device]['flags']:
+                interfaces[device]['flags'] = interfaces[device]['flags'].split(',')
+            if 'options' in device_dict and interfaces[device]['options']:
+                interfaces[device]['options'] = interfaces[device]['options'].split(',')
+            if 'nd6_options' in device_dict and interfaces[device]['nd6_options']:
+                interfaces[device]['nd6_options'] = interfaces[device]['nd6_options'].split(',')
+
+        return interfaces
+
+    def _convert_hex_netmask_to_cidr(self, hex_netmask):
+        int_netmask = int(hex_netmask, 0)
+        bit_count = 0
+        while int_netmask:
+            int_netmask &= (int_netmask - 1)
+            bit_count += 1
+        return bit_count
 
 class UnixIPParser(UnixParser):
     """

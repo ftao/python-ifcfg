@@ -28,6 +28,8 @@ def get_parser_class():
         # For some strange reason, Windows will always be win32, see:
         # https://stackoverflow.com/a/2145582/405682
         Parser = parser.WindowsParser
+    elif distro == 'FreeBSD':
+        Parser = parser.FreeBSDParser
     else:
         Parser = parser.NullParser
         Log.error("Unknown distro type '%s'." % distro)
