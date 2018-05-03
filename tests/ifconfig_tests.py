@@ -62,6 +62,21 @@ class IfcfgTestCase(IfcfgTestCase):
         eq_(interfaces['eth0']['broadcast'], '192.168.0.255')
         eq_(interfaces['eth0']['netmask'], '255.255.255.0')
 
+    def test_linuxdocker(self):
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = ifcfg.get_parser_class()
+        parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUXDOCKER)
+        interfaces = parser.interfaces
+        self.assertEqual(len(interfaces.keys()), 7)
+        eq_(interfaces['enp0s31f6']['ether'], '54:e1:ad:76:c8:cb')
+        eq_(interfaces['enp0s31f6']['inet'], '192.168.1.94')
+        eq_(interfaces['enp0s31f6']['broadcast'], '192.168.1.255')
+        eq_(interfaces['enp0s31f6']['netmask'], '255.255.255.0')
+        eq_(interfaces['br-736aa253dd57']['ether'], '02:42:9c:fe:60:db')
+        eq_(interfaces['br-736aa253dd57']['inet'], '172.19.0.1')
+        eq_(interfaces['br-736aa253dd57']['broadcast'], '0.0.0.0')
+        eq_(interfaces['br-736aa253dd57']['netmask'], '255.255.0.0')
+
     def test_macosx(self):
         ifcfg.distro = 'MacOSX'
         ifcfg.Parser = ifcfg.get_parser_class()
