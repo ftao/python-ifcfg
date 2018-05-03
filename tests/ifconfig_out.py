@@ -118,17 +118,17 @@ eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 
 MACOSX = """
 en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
-  options=2b<RXCSUM,TXCSUM,VLAN_HWTAGGING,TSO4>
-  ether 1a:2b:3c:4d:5e:6f
-  inet6 fe80::4240:36ff:fe38:a121%en0 prefixlen 64 scopeid 0x5
-  inet 192.168.0.1 netmask 0xffffff00 broadcast 192.168.0.255
-  media: autoselect (100baseTX <full-duplex>)
-  status: active
+    options=2b<RXCSUM,TXCSUM,VLAN_HWTAGGING,TSO4>
+    ether 1a:2b:3c:4d:5e:6f
+    inet6 fe80::4240:36ff:fe38:a121%en0 prefixlen 64 scopeid 0x5
+    inet 192.168.0.1 netmask 0xffffff00 broadcast 192.168.0.255
+    media: autoselect (100baseTX <full-duplex>)
+    status: active
 lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
-  options=3<RXCSUM,TXCSUM>
-  inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
-  inet 127.0.0.1 netmask 0xff000000
-  inet6 ::1 prefixlen 128
+    options=3<RXCSUM,TXCSUM>
+    inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+    inet 127.0.0.1 netmask 0xff000000
+    inet6 ::1 prefixlen 128
 """  # noqa
 
 
