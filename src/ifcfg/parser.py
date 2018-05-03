@@ -209,7 +209,7 @@ class UnixParser(Parser):
     @classmethod
     def get_patterns(cls):
         return [
-            '(?P<device>^[a-zA-Z0-9:]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
+            '(?P<device>^[-a-zA-Z0-9:]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
             '.*inet\s+(?P<inet>[\d\.]+).*',
             '.*inet6\s+(?P<inet6>[\d\:abcdef]+).*',
             '.*broadcast (?P<broadcast>[^\s]*).*',
