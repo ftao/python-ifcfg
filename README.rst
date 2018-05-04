@@ -75,7 +75,7 @@ following:
 Release notes
 -------------
 
-0.14
+0.15
 ____
 
 * Support for bridged interface names #24
