@@ -78,6 +78,12 @@ Release notes
 0.14
 ____
 
+* Support for bridged interface names #24
+
+
+0.14
+____
+
 * Replace Python 2 syntax #21
 
 
