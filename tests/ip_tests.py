@@ -31,6 +31,17 @@ class IpTestCase(IfcfgTestCase):
         eq_(interfaces['wlp3s0']['broadcast'], '192.168.12.255')
         eq_(interfaces['wlp3s0']['netmask'], '/24')
 
+    def test_linux_multi_inet4(self):
+        ifcfg.Parser = UnixIPParser
+        parser = ifcfg.get_parser(ifconfig=ip_out.LINUX_MULTI_IPV4)
+        interfaces = parser.interfaces
+        # Connected interface
+        eq_(interfaces['eth0']['ether'], 'b8:27:eb:50:39:69')
+        eq_(interfaces['eth0']['inet'], '192.168.13.1')
+        eq_(interfaces['eth0']['inet4'], ['192.168.13.1', '192.168.10.3'])
+        eq_(interfaces['eth0']['broadcast'], '192.168.13.255')
+        eq_(interfaces['eth0']['netmask'], '/24')
+
     def test_default_interface(self):
         ifcfg.distro = 'Linux'
         ifcfg.Parser = UnixIPParser

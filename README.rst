@@ -23,7 +23,8 @@ Usage
     for name, interface in ifcfg.interfaces().items():
         # do something with interface
         print interface['device']
-        print interface['inet']
+        print interface['inet']         # First IPv4 found
+        print interface['inet4']        # List of ips
         print interface['inet6']
         print interface['netmask']
         print interface['broadcast']
@@ -43,6 +44,7 @@ following:
             "flags": "4163<up,broadcast,running,multicast> ",
             "hostname": "derks-vm.local",
             "inet": "172.16.217.10",
+            "inet4": ["172.16.217.10"],
             "inet6": ["fe80::20c:29ff:fe0c:da5d"],
             "mtu": "1500",
             "name": "eth0",
@@ -53,6 +55,7 @@ following:
             "flags": "73<up,loopback,running> ",
             "hostname": "localhost",
             "inet": "127.0.0.1",
+            "inet4": ["127.0.0.1"],
             "inet6": ["::1"],
             "mtu": "16436",
             "name": "lo",
@@ -64,6 +67,7 @@ following:
             "flags": "4099<up,broadcast,multicast> ",
             "hostname": "derks-vm.local",
             "inet": "192.168.122.1",
+            "inet4": ["192.168.122.1"],
             "inet6": [],
             "mtu": "1500",
             "name": "virbr0",
@@ -74,6 +78,8 @@ following:
 
 Release notes
 -------------
+
+* Support for multiple IPv4 addresses in the new 'inet4' field
 
 0.15
 ____
