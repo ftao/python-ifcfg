@@ -13,6 +13,7 @@ Log = minimal_logger(__name__)
 #: These will always be present for each device (even if they are None)
 DEVICE_PROPERTY_DEFAULTS = {
     'inet': None,
+    'inet4': "LIST",
     'ether': None,
     'inet6': "LIST",  # Because lists are mutable
     'netmask': None,
@@ -78,6 +79,10 @@ class Parser(object):
                             self._interfaces[cur][k] = v
                         elif hasattr(self._interfaces[cur][k], 'append'):
                             self._interfaces[cur][k].append(v)
+                        elif self._interfaces[cur][k] == v:
+                            # Silently ignore if the it's the same value as last. Example: Multiple
+                            # inet4 addresses, result in multiple netmasks. Cardinality mismatch
+                            continue
                         else:
                             raise RuntimeError(
                                 "Tried to add {}={} multiple times to {}, it was already: {}".format(
@@ -89,6 +94,11 @@ class Parser(object):
                             )
                     else:
                         self._interfaces[cur][k] = v
+
+        # Copy the first 'inet4' ip address to 'inet' for backwards compatibility
+        for device, device_dict in self._interfaces.items():
+            if len(device_dict['inet4']) > 0:
+                device_dict['inet'] = device_dict['inet4'][0]
 
         # fix it up
         self._interfaces = self.alter(self._interfaces)
@@ -108,6 +118,8 @@ class Parser(object):
         """
         # fixup some things
         for device, device_dict in interfaces.items():
+            if len(device_dict['inet4']) > 0:
+                device_dict['inet'] = device_dict['inet4'][0]
             if 'inet' in device_dict and not device_dict['inet'] is None:
                 try:
                     host = socket.gethostbyaddr(device_dict['inet'])[0]
@@ -174,7 +186,7 @@ class WindowsParser(Parser):
         return [
             r"^(?P<device>\w.+):",
             r"^   Physical Address. . . . . . . . . : (?P<ether>[ABCDEFabcdef\d-]+)",
-            r"^   IPv4 Address. . . . . . . . . . . : (?P<inet>[^\s\(]+)",
+            r"^   IPv4 Address. . . . . . . . . . . : (?P<inet4>[^\s\(]+)",
             r"^   IPv6 Address. . . . . . . . . . . : (?P<inet6>[ABCDEFabcdef\d\:\%]+)",
         ]
 
@@ -210,7 +222,7 @@ class UnixParser(Parser):
     def get_patterns(cls):
         return [
             '(?P<device>^[-a-zA-Z0-9:]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
-            '.*inet\s+(?P<inet>[\d\.]+).*',
+            '.*inet\s+(?P<inet4>[\d\.]+).*',
             '.*inet6\s+(?P<inet6>[\d\:abcdef]+).*',
             '.*broadcast (?P<broadcast>[^\s]*).*',
             '.*netmask (?P<netmask>[^\s]*).*',
@@ -257,7 +269,7 @@ class LinuxParser(UnixParser):
         return super(LinuxParser, cls).get_patterns() + [
             '(?P<device>^[a-zA-Z0-9:_-]+)(.*)Link encap:(.*).*',
             '(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
-            '.*(inet addr:\s*)(?P<inet>[^\s]+).*',
+            '.*(inet addr:\s*)(?P<inet4>[^\s]+).*',
             '.*(inet6 addr:\s*)(?P<inet6>[^\s\/]+)',
             '.*(P-t-P:)(?P<ptp>[^\s]*).*',
             '.*(Bcast:)(?P<broadcast>[^\s]*).*',
@@ -288,7 +300,7 @@ class UnixIPParser(UnixParser):
     def get_patterns(cls):
         return [
             '\s*[0-9]+:\s+(?P<device>[a-zA-Z0-9]+):.*mtu (?P<mtu>.*)',
-            '.*(inet\s)(?P<inet>[\d\.]+)',
+            '.*(inet\s)(?P<inet4>[\d\.]+)',
             '.*(inet6 )(?P<inet6>[^/]*).*',
             '.*(ether )(?P<ether>[^\s]*).*',
             '.*inet\s.*(brd )(?P<broadcast>[^\s]*).*',

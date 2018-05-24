@@ -27,6 +27,18 @@ LINUX = """1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN g
     link/ether a0:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff
 """
 
+LINUX_MULTI_IPV4 = """
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether b8:27:eb:50:39:69 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.13.1/24 brd 192.168.13.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet 192.168.10.3/24 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::ba27:ebff:fe50:3969/64 scope link
+       valid_lft forever preferred_lft forever
+"""
+
+
 ROUTE_OUTPUT = """
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface

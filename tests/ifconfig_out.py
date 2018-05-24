@@ -132,6 +132,72 @@ lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
 """  # noqa
 
 
+MACOSX2 = """
+lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
+        options=1203<RXCSUM,TXCSUM,TXSTATUS,SW_TIMESTAMP>
+        inet 127.0.0.1 netmask 0xff000000
+        inet6 ::1 prefixlen 128
+        inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+        inet 127.0.1.99 netmask 0xff000000
+        nd6 options=201<PERFORMNUD,DAD>
+en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+        ether 8c:85:90:00:aa:bb
+        inet6 fe80::1c8b:e7cc:c695:a6de%en0 prefixlen 64 secured scopeid 0x6
+        inet 10.0.1.12 netmask 0xffff0000 broadcast 10.0.255.255
+        inet6 2601:980:c000:7c5a:da:6a59:1e94:b03 prefixlen 64 autoconf secured
+        inet6 2601:980:c000:7c5a:fdb3:b90c:80d6:abcd prefixlen 64 deprecated autoconf temporary
+        inet6 2601:980:c000:7c5a:34b0:676d:93f7:0123 prefixlen 64 autoconf temporary
+        nd6 options=201<PERFORMNUD,DAD>
+        media: autoselect
+        status: active
+en1: flags=963<UP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX> mtu 1500
+        options=60<TSO4,TSO6>
+        ether 7a:00:48:a1:b2:00
+        media: autoselect <full-duplex>
+        status: inactive
+p2p0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 2304
+        ether 0e:85:90:0f:ab:cd
+        media: autoselect
+        status: inactive
+awdl0: flags=8943<UP,BROADCAST,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1484
+        ether 2e:51:48:37:99:0a
+        inet6 fe80::2c51:48ff:fe37:86f8%awdl0 prefixlen 64 scopeid 0xc
+        nd6 options=201<PERFORMNUD,DAD>
+        media: autoselect
+        status: active
+bridge0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+        options=63<RXCSUM,TXCSUM,TSO4,TSO6>
+        ether 7a:00:48:c8:aa:bd
+        Configuration:
+                id 0:0:0:0:0:0 priority 0 hellotime 0 fwddelay 0
+                maxage 0 holdcnt 0 proto stp maxaddr 100 timeout 1200
+                root id 0:0:0:0:0:0 priority 0 ifcost 0 port 0
+                ipfilter disabled flags 0x2
+        member: en1 flags=3<LEARNING,DISCOVER>
+                ifmaxaddr 0 port 7 priority 0 path cost 0
+        member: en2 flags=3<LEARNING,DISCOVER>
+                ifmaxaddr 0 port 8 priority 0 path cost 0
+        member: en3 flags=3<LEARNING,DISCOVER>
+                ifmaxaddr 0 port 9 priority 0 path cost 0
+        member: en4 flags=3<LEARNING,DISCOVER>
+                ifmaxaddr 0 port 10 priority 0 path cost 0
+        nd6 options=201<PERFORMNUD,DAD>
+        media: <unknown type>
+        status: inactive
+utun0: flags=8051<UP,POINTOPOINT,RUNNING,MULTICAST> mtu 2000
+        inet6 fe80::ebb7:7d4a:49e8:e4fc%utun0 prefixlen 64 scopeid 0xe
+        nd6 options=201<PERFORMNUD,DAD>
+vboxnet0: flags=8842<BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+        ether 0a:00:27:00:00:00
+en5: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+        ether ac:de:48:00:22:11
+        inet6 fe80::aede:48ff:fe00:2211%en5 prefixlen 64 scopeid 0x5
+        nd6 options=281<PERFORMNUD,INSECURE,DAD>
+        media: autoselect
+        status: active
+"""
+
+
 ROUTE_OUTPUT = """
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
