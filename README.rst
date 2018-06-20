@@ -79,7 +79,11 @@ following:
 Release notes
 -------------
 
+0.16
+____
+
 * Support for multiple IPv4 addresses in the new 'inet4' field
+* Packaging cleanup
 
 0.15
 ____
