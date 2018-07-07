@@ -350,3 +350,27 @@ class MacOSXParser(UnixParser):
             if device_dict['netmask'] is not None:
                 interfaces[device]['netmask'] = hex2dotted(device_dict['netmask'])
         return interfaces
+
+    def _default_interface(self, route_output=None):
+        """
+        :param route_output: For mocking actual output
+        """
+        if not route_output:
+            out, __, __ = exec_cmd('/usr/sbin/netstat -rn -f inet')
+            lines = out.splitlines()
+        else:
+            lines = route_output.split("\n")
+
+        for line in lines:
+            line = line.split()
+            if 'default' in line:
+                iface = line[-1]
+                return self.interfaces.get(iface, None)
+
+    @property
+    def default_interface(self):
+        """
+        Returns the default interface device.
+        """
+        return self._default_interface()
+
