@@ -179,7 +179,7 @@ class WindowsParser(Parser):
 
     @classmethod
     def get_command(cls):
-        return ['ipconfig', '/all']
+        return 'ipconfig /all'
 
     @classmethod
     def get_patterns(cls):
@@ -216,7 +216,8 @@ class UnixParser(Parser):
             if os.path.exists(os.path.join(path, ifconfig_cmd)):
                 ifconfig_cmd = os.path.join(path, ifconfig_cmd)
                 break
-        return [ifconfig_cmd, '-a']
+        ifconfig_cmd = ifconfig_cmd + " -a"
+        return ifconfig_cmd
 
     @classmethod
     def get_patterns(cls):
@@ -294,7 +295,8 @@ class UnixIPParser(UnixParser):
             if os.path.exists(os.path.join(path, ifconfig_cmd)):
                 ifconfig_cmd = os.path.join(path, ifconfig_cmd)
                 break
-        return [ifconfig_cmd, 'address', 'show']
+        ifconfig_cmd = ifconfig_cmd + " address show"
+        return ifconfig_cmd
 
     @classmethod
     def get_patterns(cls):
