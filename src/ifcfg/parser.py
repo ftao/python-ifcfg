@@ -373,4 +373,3 @@ class MacOSXParser(UnixParser):
         Returns the default interface device.
         """
         return self._default_interface()
-
