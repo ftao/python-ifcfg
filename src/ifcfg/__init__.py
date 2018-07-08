@@ -22,6 +22,8 @@ def get_parser_class():
     global distro
     if distro == 'Linux':
         Parser = parser.LinuxParser
+        if not os.path.exists(Parser.get_command()[0]):
+            Parser = parser.UnixIPParser
     elif distro in ['Darwin', 'MacOSX']:
         Parser = parser.MacOSXParser
     elif distro == 'Windows':
@@ -33,10 +35,6 @@ def get_parser_class():
         Log.error("Unknown distro type '%s'." % distro)
     Log.debug("Distro detected as '%s'" % distro)
     Log.debug("Using '%s'" % Parser)
-
-    if isinstance(Parser, parser.UnixParser) and not os.path.exists(Parser.get_command()[0]):
-        Log.debug("Could not find 'ifconfig' cmd, falling back to 'ip' cmd")
-        Parser = parser.UnixIPParser
 
     return Parser
 

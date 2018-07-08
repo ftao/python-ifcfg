@@ -179,7 +179,7 @@ class WindowsParser(Parser):
 
     @classmethod
     def get_command(cls):
-        return ['ipconfig', '/all']
+        return 'ipconfig /all'
 
     @classmethod
     def get_patterns(cls):
@@ -216,7 +216,8 @@ class UnixParser(Parser):
             if os.path.exists(os.path.join(path, ifconfig_cmd)):
                 ifconfig_cmd = os.path.join(path, ifconfig_cmd)
                 break
-        return [ifconfig_cmd, '-a']
+        ifconfig_cmd = ifconfig_cmd + " -a"
+        return ifconfig_cmd
 
     @classmethod
     def get_patterns(cls):
@@ -242,7 +243,7 @@ class UnixParser(Parser):
         :param route_output: For mocking actual output
         """
         if not route_output:
-            out, __, __ = exec_cmd(['/sbin/route', '-n'])
+            out, __, __ = exec_cmd('/sbin/route -n')
             lines = out.splitlines()
         else:
             lines = route_output.split("\n")
@@ -294,7 +295,8 @@ class UnixIPParser(UnixParser):
             if os.path.exists(os.path.join(path, ifconfig_cmd)):
                 ifconfig_cmd = os.path.join(path, ifconfig_cmd)
                 break
-        return [ifconfig_cmd, 'address', 'show']
+        ifconfig_cmd = ifconfig_cmd + " address show"
+        return ifconfig_cmd
 
     @classmethod
     def get_patterns(cls):
@@ -306,6 +308,30 @@ class UnixIPParser(UnixParser):
             '.*inet\s.*(brd )(?P<broadcast>[^\s]*).*',
             '.*(inet )[^/]+(?P<netmask>[/][0-9]+).*',
         ]
+
+    def _default_interface(self, route_output=None):
+        """
+        :param route_output: For mocking actual output
+        """
+        if not route_output:
+            out, __, __ = exec_cmd('/sbin/ip route')
+            lines = out.splitlines()
+        else:
+            lines = route_output.split("\n")
+
+        for line in lines:
+            line = line.split()
+            if 'default' in line:
+                iface = line[4]
+                return self.interfaces.get(iface, None)
+
+    @property
+    def default_interface(self):
+        """
+        Returns the default interface device.
+        """
+        return self._default_interface()
+
 
 
 class MacOSXParser(UnixParser):
@@ -324,3 +350,26 @@ class MacOSXParser(UnixParser):
             if device_dict['netmask'] is not None:
                 interfaces[device]['netmask'] = hex2dotted(device_dict['netmask'])
         return interfaces
+
+    def _default_interface(self, route_output=None):
+        """
+        :param route_output: For mocking actual output
+        """
+        if not route_output:
+            out, __, __ = exec_cmd('/usr/sbin/netstat -rn -f inet')
+            lines = out.splitlines()
+        else:
+            lines = route_output.split("\n")
+
+        for line in lines:
+            line = line.split()
+            if 'default' in line:
+                iface = line[-1]
+                return self.interfaces.get(iface, None)
+
+    @property
+    def default_interface(self):
+        """
+        Returns the default interface device.
+        """
+        return self._default_interface()
