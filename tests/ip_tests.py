@@ -46,7 +46,6 @@ class IpTestCase(IfcfgTestCase):
         ifcfg.distro = 'Linux'
         ifcfg.Parser = UnixIPParser
         res = ifcfg.default_interface(
-            ifconfig=ip_out.LINUX,
-            route_output=ip_out.ROUTE_OUTPUT
+            route_output=ip_out.ROUTE_OUTPUT_IPROUTE
         )
         ok_(res)

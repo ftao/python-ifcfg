@@ -46,3 +46,11 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 wlp3s0
 192.168.12.0     0.0.0.0         255.255.255.0   U     600    0        0 wlp3s0
 """
+
+ROUTE_OUTPUT_IPROUTE = """
+default via 192.168.100.1 dev enp2s0 proto dhcp metric 100
+10.8.0.0/24 via 10.8.0.2 dev tun0
+10.8.0.2 dev tun0 proto kernel scope link src 10.8.0.1
+169.254.0.0/16 dev enp2s0 scope link metric 1000
+192.168.100.0/24 dev enp2s0 proto kernel scope link src 192.168.100.252 metric 100
+"""
