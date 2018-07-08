@@ -48,9 +48,9 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 """
 
 ROUTE_OUTPUT_IPROUTE = """
-default via 192.168.100.1 dev enp2s0 proto dhcp metric 100
+default via 192.168.100.1 dev enp0s25 proto dhcp metric 100
 10.8.0.0/24 via 10.8.0.2 dev tun0
 10.8.0.2 dev tun0 proto kernel scope link src 10.8.0.1
-169.254.0.0/16 dev enp2s0 scope link metric 1000
-192.168.100.0/24 dev enp2s0 proto kernel scope link src 192.168.100.252 metric 100
+169.254.0.0/16 dev enp0s25 scope link metric 1000
+192.168.100.0/24 dev enp0s25 proto kernel scope link src 192.168.100.252 metric 100
 """
