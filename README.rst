@@ -12,6 +12,9 @@ Ifcfg is a cross-platform (Windows/Unix) library for parsing ``ifconfig`` and
 ``ipconfig`` output in Python. It is useful for pulling information such as IP,
 Netmask, MAC Address, Hostname, etc.
 
+A fallbacks to ``ip`` is included for newer Unix systems w/o ``ifconfig``. Windows
+systems are supported (in English) through ``ipconfig``.
+
 Usage
 -----
 
