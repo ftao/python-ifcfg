@@ -103,6 +103,12 @@ Before commiting and opening PRs, ensure that you have pre-commit hooks running:
 Release notes
 -------------
 
+0.17
+____
+
+* Restore ``ip`` after regressions + add tests
+* Add MacOSX support for ``ip`` command
+
 0.16
 ____
 
