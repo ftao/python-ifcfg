@@ -79,6 +79,27 @@ following:
     }
 
 
+Development
+-----------
+
+To bootstrap development, use a Python virtual environment, and install the dev requirements::
+
+    # Install dev dependencies
+    pip install -r requirements_dev.txt
+    # Run tests locally
+    make test
+
+You can also install tox and run the tests in a specific environment::
+
+    pip install tox
+    tox -e py27
+
+Before commiting and opening PRs, ensure that you have pre-commit hooks running::
+
+    pip install pre-commit
+    pre-commit install
+
+
 Release notes
 -------------
 
