@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 import ifcfg
-from ifcfg.parser import NullParser
+from ifcfg.parser import LinuxParser, NullParser
 from nose.tools import eq_, ok_, raises
 
 from . import ifconfig_out
@@ -13,7 +13,7 @@ class IfcfgTestCase(IfcfgTestCase):
 
     def test_ifcfg(self):
         ifcfg.distro = 'Linux'
-        ifcfg.Parser = ifcfg.get_parser_class()
+        ifcfg.Parser = LinuxParser
         interfaces = ifcfg.interfaces(ifconfig=ifconfig_out.LINUX)
         res = len(interfaces) > 0
         ok_(res)
@@ -26,12 +26,12 @@ class IfcfgTestCase(IfcfgTestCase):
     @raises(RuntimeError)
     def test_illegal(self):
         ifcfg.distro = 'Linux'
-        ifcfg.Parser = ifcfg.get_parser_class()
+        ifcfg.Parser = LinuxParser
         ifcfg.get_parser(ifconfig=ifconfig_out.ILLEGAL_OUTPUT)
 
     def test_linux(self):
         ifcfg.distro = 'Linux'
-        ifcfg.Parser = ifcfg.get_parser_class()
+        ifcfg.Parser = LinuxParser
         parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX)
         interfaces = parser.interfaces
         self.assertEqual(len(interfaces.keys()), 2)
@@ -42,7 +42,7 @@ class IfcfgTestCase(IfcfgTestCase):
 
     def test_linux2(self):
         ifcfg.distro = 'Linux'
-        ifcfg.Parser = ifcfg.get_parser_class()
+        ifcfg.Parser = LinuxParser
         parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX2)
         interfaces = parser.interfaces
         self.assertEqual(len(interfaces.keys()), 2)
@@ -53,7 +53,7 @@ class IfcfgTestCase(IfcfgTestCase):
 
     def test_linux3(self):
         ifcfg.distro = 'Linux'
-        ifcfg.Parser = ifcfg.get_parser_class()
+        ifcfg.Parser = LinuxParser
         parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX3)
         interfaces = parser.interfaces
         self.assertEqual(len(interfaces.keys()), 2)
@@ -64,7 +64,7 @@ class IfcfgTestCase(IfcfgTestCase):
 
     def test_linuxdocker(self):
         ifcfg.distro = 'Linux'
-        ifcfg.Parser = ifcfg.get_parser_class()
+        ifcfg.Parser = LinuxParser
         parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUXDOCKER)
         interfaces = parser.interfaces
         self.assertEqual(len(interfaces.keys()), 7)
@@ -100,7 +100,7 @@ class IfcfgTestCase(IfcfgTestCase):
 
     def test_default_interface(self):
         ifcfg.distro = 'Linux'
-        ifcfg.Parser = ifcfg.get_parser_class()
+        ifcfg.Parser = LinuxParser
         route_output = ifconfig_out.ROUTE_OUTPUT
         res = ifcfg.default_interface(
             ifconfig=ifconfig_out.LINUX3, route_output=route_output
