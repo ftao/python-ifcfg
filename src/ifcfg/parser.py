@@ -301,7 +301,7 @@ class UnixIPParser(UnixParser):
     @classmethod
     def get_patterns(cls):
         return [
-            '\s*[0-9]+:\s+(?P<device>[^:]+):.*mtu (?P<mtu>.*)',
+            r'\s*[0-9]+:\s+(?P<device>[^@:]+)[^:]*:.*mtu (?P<mtu>.*)',
             '.*(inet\s)(?P<inet4>[\d\.]+)',
             '.*(inet6 )(?P<inet6>[^/]*).*',
             '.*(ether )(?P<ether>[^\s]*).*',
