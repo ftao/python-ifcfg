@@ -25,6 +25,12 @@ LINUX = """1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN g
        valid_lft forever preferred_lft forever
 6: wwp0s29u1u4i6: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000
     link/ether a0:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff
+8: enp6s0.2@enp6s0: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000
+    link/ether 00:73:00:5c:09:9a brd ff:ff:ff:ff:ff:ff
+    inet 10.2.2.253/24 scope global enp6s0.2
+       valid_lft forever preferred_lft forever
+    inet 10.1.1.253/24 scope global enp6s0.2
+       valid_lft forever preferred_lft forever
 """
 
 LINUX_MULTI_IPV4 = """
