@@ -222,12 +222,12 @@ class UnixParser(Parser):
     @classmethod
     def get_patterns(cls):
         return [
-            '(?P<device>^[-a-zA-Z0-9:]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
-            '.*inet\s+(?P<inet4>[\d\.]+).*',
-            '.*inet6\s+(?P<inet6>[\d\:abcdef]+).*',
-            '.*broadcast (?P<broadcast>[^\s]*).*',
-            '.*netmask (?P<netmask>[^\s]*).*',
-            '.*ether (?P<ether>[^\s]*).*',
+            r'(?P<device>^[-a-zA-Z0-9:]+): flags=(?P<flags>.*) mtu (?P<mtu>.*)',
+            r'.*inet\s+(?P<inet4>[\d\.]+).*',
+            r'.*inet6\s+(?P<inet6>[\d\:abcdef]+).*',
+            r'.*broadcast (?P<broadcast>[^\s]*).*',
+            r'.*netmask (?P<netmask>[^\s]*).*',
+            r'.*ether (?P<ether>[^\s]*).*',
         ]
 
     @property
@@ -268,15 +268,15 @@ class LinuxParser(UnixParser):
     @classmethod
     def get_patterns(cls):
         return super(LinuxParser, cls).get_patterns() + [
-            '(?P<device>^[a-zA-Z0-9:_-]+)(.*)Link encap:(.*).*',
-            '(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
-            '.*(inet addr:\s*)(?P<inet4>[^\s]+).*',
-            '.*(inet6 addr:\s*)(?P<inet6>[^\s\/]+)',
-            '.*(P-t-P:)(?P<ptp>[^\s]*).*',
-            '.*(Bcast:)(?P<broadcast>[^\s]*).*',
-            '.*(Mask:)(?P<netmask>[^\s]*).*',
-            '.*(RX bytes:)(?P<rxbytes>\d+).*',
-            '.*(TX bytes:)(?P<txbytes>\d+).*',
+            r'(?P<device>^[a-zA-Z0-9:_-]+)(.*)Link encap:(.*).*',
+            r'(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
+            r'.*(inet addr:\s*)(?P<inet4>[^\s]+).*',
+            r'.*(inet6 addr:\s*)(?P<inet6>[^\s\/]+)',
+            r'.*(P-t-P:)(?P<ptp>[^\s]*).*',
+            r'.*(Bcast:)(?P<broadcast>[^\s]*).*',
+            r'.*(Mask:)(?P<netmask>[^\s]*).*',
+            r'.*(RX bytes:)(?P<rxbytes>\d+).*',
+            r'.*(TX bytes:)(?P<txbytes>\d+).*',
         ]
 
     def alter(self, interfaces):
@@ -302,11 +302,11 @@ class UnixIPParser(UnixParser):
     def get_patterns(cls):
         return [
             r'\s*[0-9]+:\s+(?P<device>[^@:]+)[^:]*:.*mtu (?P<mtu>.*)',
-            '.*(inet\s)(?P<inet4>[\d\.]+)',
-            '.*(inet6 )(?P<inet6>[^/]*).*',
-            '.*(ether )(?P<ether>[^\s]*).*',
-            '.*inet\s.*(brd )(?P<broadcast>[^\s]*).*',
-            '.*(inet )[^/]+(?P<netmask>[/][0-9]+).*',
+            r'.*(inet\s)(?P<inet4>[\d\.]+)',
+            r'.*(inet6 )(?P<inet6>[^/]*).*',
+            r'.*(ether )(?P<ether>[^\s]*).*',
+            r'.*inet\s.*(brd )(?P<broadcast>[^\s]*).*',
+            r'.*(inet )[^/]+(?P<netmask>[/][0-9]+).*',
         ]
 
     def _default_interface(self, route_output=None):
@@ -339,8 +339,8 @@ class MacOSXParser(UnixParser):
     @classmethod
     def get_patterns(cls):
         return super(MacOSXParser, cls).get_patterns() + [
-            '.*(status: )(?P<status>[^\s]*).*',
-            '.*(media: )(?P<media>.*)',
+            r'.*(status: )(?P<status>[^\s]*).*',
+            r'.*(media: )(?P<media>.*)',
         ]
 
     def alter(self, interfaces):
