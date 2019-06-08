@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 
 import os
 import platform
-from . import tools
-from . import parser
 
-__version__ = "0.17"
+from . import parser, tools
+
+__version__ = "0.18"
 
 Log = tools.minimal_logger(__name__)
 

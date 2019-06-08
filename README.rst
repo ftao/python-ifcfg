@@ -103,6 +103,11 @@ Before commiting and opening PRs, ensure that you have pre-commit hooks running:
 Release notes
 -------------
 
+0.18
+____
+
+* Adds support for interfaces with non-alphanumeric characters, e.g. `eth-int` #35 and #36
+
 0.17
 ____
 
