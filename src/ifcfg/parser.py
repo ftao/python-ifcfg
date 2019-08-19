@@ -272,6 +272,7 @@ class LinuxParser(UnixParser):
             r'(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
             r'.*(inet addr:\s*)(?P<inet4>[^\s]+).*',
             r'.*(inet6 addr:\s*)(?P<inet6>[^\s\/]+)',
+            r'.*(MTU:\s*)(?P<MTU>[^\s\/]+)',
             r'.*(P-t-P:)(?P<ptp>[^\s]*).*',
             r'.*(Bcast:)(?P<broadcast>[^\s]*).*',
             r'.*(Mask:)(?P<netmask>[^\s]*).*',
