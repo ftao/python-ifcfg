@@ -268,7 +268,7 @@ class LinuxParser(UnixParser):
     @classmethod
     def get_patterns(cls):
         return super(LinuxParser, cls).get_patterns() + [
-            r'(?P<device>^[a-zA-Z0-9:_-]+)(.*)Link encap:(.*).*',
+            r'(?P<device>^[a-zA-Z0-9:_-]+(\.\d+)?)(.*)Link encap:(.*).*',
             r'(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
             r'.*(inet addr:\s*)(?P<inet4>[^\s]+).*',
             r'.*(inet6 addr:\s*)(?P<inet6>[^\s\/]+)',
