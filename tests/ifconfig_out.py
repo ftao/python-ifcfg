@@ -197,6 +197,85 @@ en5: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
         status: active
 """
 
+# See: https://github.com/ftao/python-ifcfg/issues/40
+LINUX_VLAN = """
+br2       Link encap:Ethernet  HWaddr 08:00:27:7c:6d:9d
+          inet addr:10.0.0.1  Bcast:10.0.0.255  Mask:255.255.255.0
+          inet6 addr: fe80::a00:27ff:fe7c:6d9d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:20 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:1528 (1.4 KiB)
+
+br4       Link encap:Ethernet  HWaddr 08:00:27:7c:6d:9d
+          inet addr:10.0.2.1  Bcast:10.0.2.255  Mask:255.255.255.0
+          inet6 addr: fe80::a00:27ff:fe7c:6d9d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:727 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:643 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:88547 (86.4 KiB)  TX bytes:890348 (869.4 KiB)
+
+brlan     Link encap:Ethernet  HWaddr 08:00:27:d8:78:41
+          inet addr:192.168.0.1  Bcast:192.168.0.255  Mask:255.255.255.0
+          inet6 addr: fe80::a00:27ff:fed8:7841/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:6905 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:20 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:351150 (342.9 KiB)  TX bytes:1568 (1.5 KiB)
+
+eth0      Link encap:Ethernet  HWaddr 08:00:27:d8:78:41
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:7353 errors:0 dropped:433 overruns:0 frame:0
+          TX packets:20 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:482610 (471.2 KiB)  TX bytes:1568 (1.5 KiB)
+
+eth1      Link encap:Ethernet  HWaddr 08:00:27:f2:d0:cb
+          inet addr:172.16.25.205  Bcast:172.16.25.255  Mask:255.255.255.0
+          inet6 addr: fe80::a00:27ff:fef2:d0cb/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:65901 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:36638 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:80272939 (76.5 MiB)  TX bytes:5598473 (5.3 MiB)
+
+eth2      Link encap:Ethernet  HWaddr 08:00:27:7c:6d:9d
+          inet6 addr: fe80::a00:27ff:fe7c:6d9d/64 Scope:Link
+          UP BROADCAST RUNNING PROMISC MULTICAST  MTU:1500  Metric:1
+          RX packets:7200 errors:0 dropped:431 overruns:0 frame:0
+          TX packets:111 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:471382 (460.3 KiB)  TX bytes:8368 (8.1 KiB)
+
+eth2.2    Link encap:Ethernet  HWaddr 08:00:27:7c:6d:9d
+          inet6 addr: fe80::a00:27ff:fe7c:6d9d/64 Scope:Link
+          UP BROADCAST RUNNING PROMISC MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:31 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:2278 (2.2 KiB)
+
+eth2.4    Link encap:Ethernet  HWaddr 08:00:27:7c:6d:9d
+          inet6 addr: fe80::a00:27ff:fe7c:6d9d/64 Scope:Link
+          UP BROADCAST RUNNING PROMISC MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:52 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:3704 (3.6 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:12786 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:12786 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1
+          RX bytes:1853178 (1.7 MiB)  TX bytes:1853178 (1.7 MiB)
+"""
+
 
 ROUTE_OUTPUT = """
 Kernel IP routing table

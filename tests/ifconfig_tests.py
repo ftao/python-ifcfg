@@ -77,6 +77,17 @@ class IfcfgTestCase(IfcfgTestCase):
         eq_(interfaces['br-736aa253dd57']['broadcast'], '0.0.0.0')
         eq_(interfaces['br-736aa253dd57']['netmask'], '255.255.0.0')
 
+    def test_vlan(self):
+        """
+        Regression test for: https://github.com/ftao/python-ifcfg/issues/40
+        """
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = LinuxParser
+        parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX_VLAN)
+        interfaces = parser.interfaces
+        self.assertEqual(len(interfaces.keys()), 9)
+        eq_(interfaces['eth2.2']['ether'], '08:00:27:7c:6d:9d')
+
     def test_macosx(self):
         ifcfg.distro = 'MacOSX'
         ifcfg.Parser = ifcfg.get_parser_class()
