@@ -103,6 +103,12 @@ Before commiting and opening PRs, ensure that you have pre-commit hooks running:
 Release notes
 -------------
 
+0.19
+____
+
+* Adds support for interfaces with VLAN notation, e.g. `eth2.2` #40
+* Fetch MTU values from `ip` command results
+
 0.18
 ____
 
