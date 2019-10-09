@@ -28,12 +28,15 @@ class IpTestCase(IfcfgTestCase):
         # Connected interface
         eq_(interfaces['wlp3s0']['ether'], 'a0:00:00:00:00:00')
         eq_(interfaces['wlp3s0']['inet'], '192.168.12.34')
+        eq_(interfaces['wlp3s0']['inet4'], ['192.168.12.34'])
         eq_(interfaces['wlp3s0']['inet6'], ['fd37:a521:ada9::869', 'fd37:a521:ada9:0:b9f7:44f8:bb19:c78c', 'fd37:a521:ada9:0:9073:a91:d14f:8087', 'fe80::205f:5d09:d0da:7aed'])
         eq_(interfaces['wlp3s0']['broadcast'], '192.168.12.255')
         eq_(interfaces['wlp3s0']['netmask'], '/24')
+        eq_(interfaces['wlp3s0']['mtu'], '1500')
         # Connected interface
         eq_(interfaces['enp6s0.2']['ether'], '00:73:00:5c:09:9a')
         eq_(interfaces['enp6s0.2']['inet'], '10.2.2.253')
+        eq_(interfaces['enp6s0.2']['mtu'], '1500')
         eq_(interfaces['enp6s0.2']['inet4'], ['10.2.2.253', '10.1.1.253'])
         eq_(interfaces['enp6s0.2']['inet6'], [])
 
@@ -47,6 +50,7 @@ class IpTestCase(IfcfgTestCase):
         eq_(interfaces['eth0']['inet4'], ['192.168.13.1', '192.168.10.3'])
         eq_(interfaces['eth0']['broadcast'], '192.168.13.255')
         eq_(interfaces['eth0']['netmask'], '/24')
+        eq_(interfaces['eth0']['mtu'], '1500')
 
     def test_default_interface(self):
         ifcfg.distro = 'Linux'
