@@ -107,7 +107,7 @@ Release notes
 ____
 
 * Adds support for interfaces with VLAN notation, e.g. `eth2.2` #40
-* Fetch MTU values from `ip` command results
+* Fetch MTU values from `ip` command results #39
 
 0.18
 ____
