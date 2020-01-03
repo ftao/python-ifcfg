@@ -8,6 +8,9 @@ python:
   - "3.5"
   - "3.6"
 
+before_install:
+  - sudo apt-get install -y net-tools
+
 install:
   - pip install -U pip codecov tox tox-travis
 
