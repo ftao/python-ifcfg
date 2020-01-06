@@ -103,6 +103,11 @@ Before commiting and opening PRs, ensure that you have pre-commit hooks running:
 Release notes
 -------------
 
+0.20
+____
+
+* Throw an exception when neither `ip` nor `ifconfig` commands exist #45
+
 0.19
 ____
 
