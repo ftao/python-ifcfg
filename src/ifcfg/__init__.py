@@ -25,7 +25,9 @@ def get_parser_class():
         if not os.path.exists(Parser.get_command()[0]):
             Parser = parser.UnixIPParser
             if not os.path.exists(Parser.get_command()[0]):
-                Log.warning("Neither `ifconfig` nor `ip` commands are available, listing network interfaces is likely to fail")
+                Log.warning("Neither `ifconfig` (`%s`) nor `ip` (`%s`) commands are available, listing network interfaces is likely to fail",
+                            parser.LinuxParser.get_command()[0],
+                            parser.UnixIPParser.get_command()[0])
     elif distro in ['Darwin', 'MacOSX']:
         Parser = parser.MacOSXParser
     elif distro == 'Windows':
