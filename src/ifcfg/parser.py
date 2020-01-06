@@ -51,7 +51,10 @@ class Parser(object):
 
         """
         if not ifconfig:
-            ifconfig, __, __ = exec_cmd(self.get_command())
+            ifconfig, errors, return_code = exec_cmd(self.get_command())
+            if return_code:
+                Log.error(errors)
+                raise ValueError("Non-zero return code, reporting error-code '{}'".format(errors))
         self.ifconfig_data = ifconfig
         cur = None
         patterns = self.get_patterns()
