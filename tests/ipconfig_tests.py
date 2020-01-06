@@ -97,6 +97,9 @@ class WindowsTestCase(IfcfgTestCase):
         )
 
     # Add a character that's known to fail in cp1252 encoding
+    # Patching `wait` is needed because on CI, these process (for Windows) don't really exist and cannot be executed
+    # `wait` sets the returncode which must be 0 for the parser to run
+    @mock.patch.object(subprocess.Popen, 'wait', lambda __: 0)
     @mock.patch.object(subprocess.Popen, 'communicate', lambda __: [ipconfig_out.WINDOWS_7_VM.encode('cp1252') + binascii.unhexlify("81"), "".encode('cp1252')])
     @mock.patch.object(tools, 'system_encoding', "cp1252")
     def test_cp1252_encoding(self):
@@ -124,9 +127,9 @@ class WindowsTestCase(IfcfgTestCase):
             0
         )
 
-
     # Add a character that's known to fail in unicode encoding
     # https://github.com/ftao/python-ifcfg/issues/17
+    @mock.patch.object(subprocess.Popen, 'wait', lambda __: 0)  # See test_cp1252_encoding's mocks as well
     @mock.patch.object(subprocess.Popen, 'communicate', lambda __: [ipconfig_out.WINDOWS_7_VM.encode('cp1252') + binascii.unhexlify("84"), "".encode('cp1252')])
     @mock.patch.object(tools, 'system_encoding', "cp1252")
     def test_cp1252_non_utf8_byte(self):
