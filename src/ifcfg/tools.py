@@ -29,7 +29,9 @@ def exec_cmd(cmd_args):
     # errors of bytes that are invalid (happens on Windows)
     # NB! Python 2 returns a string, Python 3 returns a bytestring
     # https://github.com/ftao/python-ifcfg/issues/17
-    proc = Popen(cmd_args, stdout=PIPE, stderr=PIPE, universal_newlines=False, shell=True)
+    env = os.environ.copy()
+    env.update({"LANG": "C"})
+    proc = Popen(cmd_args, stdout=PIPE, stderr=PIPE, universal_newlines=False, shell=True, env=env)
     stdout, stderr = proc.communicate()
     proc.wait()
 
