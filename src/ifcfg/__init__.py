@@ -6,7 +6,7 @@ import platform
 
 from . import parser, tools
 
-__version__ = "0.21b1"
+__version__ = "0.21"
 
 Log = tools.minimal_logger(__name__)
 
