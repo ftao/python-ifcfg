@@ -103,8 +103,8 @@ Before commiting and opening PRs, ensure that you have pre-commit hooks running:
 Release notes
 -------------
 
-0.21b1
-______
+0.21
+____
 
 * Force `C` as locale for running commands, to ensure consistent regex patterns #47
 
