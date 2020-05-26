@@ -11,7 +11,7 @@ import ifcfg  # noqa
 setup(
     name='ifcfg',
     version=ifcfg.__version__,
-    description="Python Ifconfig Wrapper for Unix/Linux/MacOSX",
+    description="Python ifconfig wrapper for Unix/Linux/MacOSX + ipconfig for Windows",
     long_description=open("README.rst").read(),
     keywords='',
     author='Original author: BJ Dierkes',
@@ -41,6 +41,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
 )
