@@ -215,8 +215,9 @@ class WindowsParser(Parser):
         """
         Returns the default interface device.
         """
-        for iname, interface in self.interfaces.items():
-            if interface.get('default_gateway', '').strip():
+        for _ifn, interface in self.interfaces.items():
+            gateway = interface.get('default_gateway', '').strip()
+            if gateway and gateway != '::' and not gateway.startswith('127'):
                 return interface
 
 class UnixParser(Parser):
