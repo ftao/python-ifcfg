@@ -43,6 +43,15 @@ class WindowsTestCase(IfcfgTestCase):
         eq_(interfaces['Ethernet adapter Ethernet']['inet'], '192.168.1.2')
         eq_(interfaces['Ethernet adapter Ethernet']['ether'], '11:11:11:11:a1:fa')
 
+    def test_default_interface_windows10(self):
+        ifcfg.distro = 'Windows'
+        ifcfg.Parser = ifcfg.get_parser_class()
+
+        parser = ifcfg.get_parser(ifconfig=ipconfig_out.WINDOWS_10_ETH)
+        default = parser.default_interface
+        ok_(default)
+        eq_(default['inet'], '192.168.1.2')
+        eq_(default['default_gateway'], '192.168.1.1')
 
     def test_windows10_w_2_ethernets(self):
         ifcfg.distro = "Windows"
@@ -75,6 +84,18 @@ class WindowsTestCase(IfcfgTestCase):
         eq_(interfaces['Ethernet adapter Ethernet 2']['ether'], '08:00:27:0d:9a:0b')
         eq_(interfaces['Ethernet adapter Ethernet 2']['inet6'], [])
 
+    def test_default_interface_windows10_w_2_ethernets(self):
+        ifcfg.distro = 'Windows'
+        ifcfg.Parser = ifcfg.get_parser_class()
+
+        parser = ifcfg.get_parser(
+            ifconfig=ipconfig_out.WINDOWS_10_WITH_2_ETHERNETS
+        )
+        default = parser.default_interface
+        ok_(default)
+        eq_(default['inet'], '10.0.2.15')
+        eq_(default['default_gateway'], '10.0.2.2')
+
     def test_windows7vm(self):
         ifcfg.distro = "Windows"
         ifcfg.Parser = ifcfg.get_parser_class()
@@ -95,6 +116,26 @@ class WindowsTestCase(IfcfgTestCase):
             len(interfaces['Ethernet adapter Local Area Connection 2']['inet6']),
             0
         )
+
+    def test_default_interface_windows7vm(self):
+        ifcfg.distro = 'Windows'
+        ifcfg.Parser = ifcfg.get_parser_class()
+
+        parser = ifcfg.get_parser(ifconfig=ipconfig_out.WINDOWS_7_VM)
+        default = parser.default_interface
+        ok_(default)
+        eq_(default['inet'], '10.0.2.15')
+        eq_(default['default_gateway'], '10.0.2.2')
+
+    def test_default_interface_windows10_wlan(self):
+        ifcfg.distro = 'Windows'
+        ifcfg.Parser = ifcfg.get_parser_class()
+
+        parser = ifcfg.get_parser(ifconfig=ipconfig_out.WINDOWS_10_WLAN)
+        default = parser.default_interface
+        ok_(default)
+        eq_(default['inet'], '192.168.40.219')
+        eq_(default['default_gateway'], '192.168.40.1')
 
     # Add a character that's known to fail in cp1252 encoding
     # Patching `wait` is needed because on CI, these process (for Windows) don't really exist and cannot be executed
