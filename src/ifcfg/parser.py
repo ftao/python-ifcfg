@@ -191,6 +191,7 @@ class WindowsParser(Parser):
             r"^   Physical Address. . . . . . . . . : (?P<ether>[ABCDEFabcdef\d-]+)",
             r"^   IPv4 Address. . . . . . . . . . . : (?P<inet4>[^\s\(]+)",
             r"^   IPv6 Address. . . . . . . . . . . : (?P<inet6>[ABCDEFabcdef\d\:\%]+)",
+            r"^\s+Default Gateway . . . . . . . . . : (?P<default_gateway>[^\s\(]+)",
         ]
 
     @property
@@ -209,6 +210,15 @@ class WindowsParser(Parser):
                 interfaces[device]['ether'] = device_dict['ether'].replace('-', ':')
         return interfaces
 
+    @property
+    def default_interface(self):
+        """
+        Returns the default interface device.
+        """
+        for _ifn, interface in self.interfaces.items():
+            gateway = interface.get('default_gateway', '').strip()
+            if gateway and gateway != '::' and not gateway.startswith('127'):
+                return interface
 
 class UnixParser(Parser):
 
