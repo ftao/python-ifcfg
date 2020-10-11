@@ -20,8 +20,8 @@ class IfcfgToolsTestCase(unittest.TestCase):
         os.environ['IFCFG_DEBUG'] = '0'
 
     def test_command(self):
-        output, __, __ = exec_cmd("echo -n 'this is a test'")
-        self.assertEqual(output, "this is a test")
+        output, __, __ = exec_cmd("echo this is a test")
+        self.assertEqual(output.strip(), "this is a test")
 
 
     @unittest.skipIf(sys.version[0] != '2',

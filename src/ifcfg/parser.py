@@ -192,6 +192,7 @@ class WindowsParser(Parser):
             r"^   IPv4 Address. . . . . . . . . . . : (?P<inet4>[^\s\(]+)",
             r"^   IPv6 Address. . . . . . . . . . . : (?P<inet6>[ABCDEFabcdef\d\:\%]+)",
             r"^\s+Default Gateway . . . . . . . . . : (?P<default_gateway>[^\s\(]+)",
+            r"^\s+Subnet Mask . . . . . . . . . . . : (?P<netmask>[^\s\(]+)",
         ]
 
     @property
@@ -210,15 +211,22 @@ class WindowsParser(Parser):
                 interfaces[device]['ether'] = device_dict['ether'].replace('-', ':')
         return interfaces
 
-    @property
-    def default_interface(self):
+
+    def _default_interface(self, route_output=None):
         """
-        Returns the default interface device.
+        :param route_output: For mocking actual output
         """
         for _ifn, interface in self.interfaces.items():
             gateway = interface.get('default_gateway', '').strip()
             if gateway and gateway != '::' and not gateway.startswith('127'):
                 return interface
+
+    @property
+    def default_interface(self):
+        """
+        Returns the default interface device.
+        """
+        return self._default_interface()
 
 class UnixParser(Parser):
 
