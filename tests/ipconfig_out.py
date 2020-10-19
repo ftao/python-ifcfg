@@ -190,7 +190,7 @@ Ethernet adapter Local Area Connection 2:
    Connection-specific DNS Suffix  . : lan
    Link-local IPv6 Address . . . . . : fe80::cad:9321:168e:83e3%13
    IPv4 Address. . . . . . . . . . . : 10.0.2.15
-   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Subnet Mask . . . . . . . . . . . : 255.255.254.0
    Default Gateway . . . . . . . . . : 10.0.2.2
 
 Tunnel adapter isatap.lan:
@@ -226,7 +226,7 @@ Ethernet adapter Ethernet:
    Autoconfiguration Enabled . . . . : Yes
    Link-local IPv6 Address . . . . . : fe80::e59b:7afd:78a6:d073%4(Preferred)
    IPv4 Address. . . . . . . . . . . : 10.0.2.15(Preferred)
-   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Subnet Mask . . . . . . . . . . . : 255.255.254.0
    Lease Obtained. . . . . . . . . . : jueves, 3 de agosto de 2017 1:00:44
    Lease Expires . . . . . . . . . . : viernes, 4 de agosto de 2017 1:00:59
    Default Gateway . . . . . . . . . : 10.0.2.2

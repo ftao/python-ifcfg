@@ -41,7 +41,10 @@ class WindowsTestCase(IfcfgTestCase):
         self.assertEqual(len(interfaces.keys()), 6)
 
         eq_(interfaces['Ethernet adapter Ethernet']['inet'], '192.168.1.2')
+        eq_(interfaces['Ethernet adapter Ethernet']['inet4'][0], '192.168.1.2')
         eq_(interfaces['Ethernet adapter Ethernet']['ether'], '11:11:11:11:a1:fa')
+        eq_(interfaces['Ethernet adapter Ethernet']['default_gateway'], '192.168.1.1')
+        eq_(interfaces['Ethernet adapter Ethernet']['netmask'], '255.255.255.0')
 
     def test_default_interface_windows10(self):
         ifcfg.distro = 'Windows'
@@ -52,6 +55,7 @@ class WindowsTestCase(IfcfgTestCase):
         ok_(default)
         eq_(default['inet'], '192.168.1.2')
         eq_(default['default_gateway'], '192.168.1.1')
+        eq_(default['netmask'], '255.255.255.0')
 
     def test_windows10_w_2_ethernets(self):
         ifcfg.distro = "Windows"
@@ -78,11 +82,13 @@ class WindowsTestCase(IfcfgTestCase):
         eq_(interfaces['Ethernet adapter Ethernet']['inet'], '10.0.2.15')
         eq_(interfaces['Ethernet adapter Ethernet']['ether'], '08:00:27:cc:be:af')
         eq_(interfaces['Ethernet adapter Ethernet']['inet6'], [])
+        eq_(interfaces['Ethernet adapter Ethernet']['netmask'], '255.255.254.0')
 
         # Adapter 2
         eq_(interfaces['Ethernet adapter Ethernet 2']['inet'], '192.168.56.101')
         eq_(interfaces['Ethernet adapter Ethernet 2']['ether'], '08:00:27:0d:9a:0b')
         eq_(interfaces['Ethernet adapter Ethernet 2']['inet6'], [])
+        eq_(interfaces['Ethernet adapter Ethernet 2']['netmask'], '255.255.255.0')
 
     def test_default_interface_windows10_w_2_ethernets(self):
         ifcfg.distro = 'Windows'
@@ -95,6 +101,7 @@ class WindowsTestCase(IfcfgTestCase):
         ok_(default)
         eq_(default['inet'], '10.0.2.15')
         eq_(default['default_gateway'], '10.0.2.2')
+        eq_(default['netmask'], '255.255.254.0')
 
     def test_windows7vm(self):
         ifcfg.distro = "Windows"
@@ -126,6 +133,7 @@ class WindowsTestCase(IfcfgTestCase):
         ok_(default)
         eq_(default['inet'], '10.0.2.15')
         eq_(default['default_gateway'], '10.0.2.2')
+        eq_(default['netmask'], '255.255.254.0')
 
     def test_default_interface_windows10_wlan(self):
         ifcfg.distro = 'Windows'
@@ -136,6 +144,7 @@ class WindowsTestCase(IfcfgTestCase):
         ok_(default)
         eq_(default['inet'], '192.168.40.219')
         eq_(default['default_gateway'], '192.168.40.1')
+        eq_(default['netmask'], '255.255.255.0')
 
     # Add a character that's known to fail in cp1252 encoding
     # Patching `wait` is needed because on CI, these process (for Windows) don't really exist and cannot be executed
