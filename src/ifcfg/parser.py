@@ -318,7 +318,7 @@ class UnixIPParser(UnixParser):
     @classmethod
     def get_patterns(cls):
         return [
-            r'\s*[0-9]+:\s+(?P<device>[^@:]+)[^:]*:.*mtu (?P<mtu>\d+)',
+            r'\s*[0-9]+:\s+(?P<device>[^@:]+)[^:]*:(?P<flags>.*) mtu (?P<mtu>\d+)',
             r'.*(inet\s)(?P<inet4>[\d\.]+)',
             r'.*(inet6 )(?P<inet6>[^/]*).*',
             r'.*(ether )(?P<ether>[^\s]*).*',
@@ -349,6 +349,8 @@ class UnixIPParser(UnixParser):
         """
         return self._default_interface()
 
+    def alter(self, interfaces):
+        return interfaces
 
 
 class MacOSXParser(UnixParser):
