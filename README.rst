@@ -103,6 +103,13 @@ Before commiting and opening PRs, ensure that you have pre-commit hooks running:
 Release notes
 -------------
 
+0.22
+____
+
+* Python 3.7 and 3.8 support #51 #53
+* Default interface detection on Windows #25 #56
+* New flags for unix `ip` command #61
+
 0.21
 ____
 
