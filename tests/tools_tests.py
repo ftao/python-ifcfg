@@ -20,7 +20,11 @@ class IfcfgToolsTestCase(unittest.TestCase):
         os.environ['IFCFG_DEBUG'] = '0'
 
     def test_command(self):
-        output, __, __ = exec_cmd("echo -n 'this is a test'")
+        if sys.platform == "darwin":
+            cmd = "/bin/echo -n 'this is a test'"
+        else:
+            cmd = "echo -n 'this is a test'"
+        output, __, __ = exec_cmd(cmd)
         self.assertEqual(output, "this is a test")
 
 

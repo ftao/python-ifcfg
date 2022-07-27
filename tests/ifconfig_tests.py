@@ -98,6 +98,8 @@ class IfcfgTestCase(IfcfgTestCase):
         eq_(interfaces['en0']['inet'], '192.168.0.1')
         eq_(interfaces['en0']['broadcast'], '192.168.0.255')
         eq_(interfaces['en0']['netmask'], '255.255.255.0')
+        eq_(interfaces['lo0']['netmasks'], ['255.0.0.0'])
+        eq_(interfaces['lo0']['prefixlens'], ['64', '128'])
 
     def test_macosx2(self):
         ifcfg.distro = 'MacOSX'
