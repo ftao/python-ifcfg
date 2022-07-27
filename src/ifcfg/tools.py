@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 import locale
 import logging
 import os
+import socket
+import struct
 from subprocess import PIPE, Popen
 
 system_encoding = locale.getpreferredencoding()
@@ -42,10 +44,4 @@ def exec_cmd(cmd_args):
     return (stdout, stderr, proc.returncode)
 
 def hex2dotted(hex_num):
-    num = hex_num.split('x')[1]
-    w = int(num[0:2], 16)
-    x = int(num[2:4], 16)
-    y = int(num[4:6], 16)
-    z = int(num[6:8], 16)
-
-    return "%d.%d.%d.%d" % (w, x, y, z)
+    return socket.inet_ntoa(struct.pack('>L',int(hex_num, base=0)))

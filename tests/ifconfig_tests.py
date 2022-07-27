@@ -110,6 +110,7 @@ class IfcfgTestCase(IfcfgTestCase):
         eq_(interfaces['lo0']['inet'], '127.0.0.1')
         eq_(interfaces['lo0']['inet4'], ['127.0.0.1', '127.0.1.99'])
         eq_(interfaces['lo0']['netmask'], '255.0.0.0')
+        eq_(interfaces['lo0']['netmasks'], ['255.0.0.0', '255.0.0.0'])
 
     def test_default_interface(self):
         ifcfg.distro = 'Linux'
