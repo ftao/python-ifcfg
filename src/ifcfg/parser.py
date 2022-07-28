@@ -130,7 +130,7 @@ class Parser(object):
         for device, device_dict in interfaces.items():
             if len(device_dict['inet4']) > 0:
                 device_dict['inet'] = device_dict['inet4'][0]
-            if 'inet' in device_dict and not device_dict['inet'] is None:
+            if 'inet' in device_dict and device_dict['inet'] is not None:
                 try:
                     host = socket.gethostbyaddr(device_dict['inet'])[0]
                     interfaces[device]['hostname'] = host
