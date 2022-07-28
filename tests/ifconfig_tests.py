@@ -96,6 +96,7 @@ class IfcfgTestCase(IfcfgTestCase):
         self.assertEqual(len(interfaces.keys()), 2)
         eq_(interfaces['en0']['ether'], '1a:2b:3c:4d:5e:6f')
         eq_(interfaces['en0']['inet'], '192.168.0.1')
+        eq_(interfaces['en0']['broadcasts'], ['192.168.0.255'])
         eq_(interfaces['en0']['broadcast'], '192.168.0.255')
         eq_(interfaces['en0']['netmask'], '255.255.255.0')
         eq_(interfaces['lo0']['netmasks'], ['255.0.0.0'])
