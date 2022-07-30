@@ -13,10 +13,14 @@ Log = minimal_logger(__name__)
 #: These will always be present for each device (even if they are None)
 DEVICE_PROPERTY_DEFAULTS = {
     'inet': None,
-    'inet4': "LIST",
+    'inet4': 'LIST',
     'ether': None,
-    'inet6': "LIST",  # Because lists are mutable
+    'inet6': 'LIST',  # Because lists are mutable
     'netmask': None,
+    'netmasks': 'LIST',
+    'broadcast': None,
+    'broadcasts': 'LIST',
+    'prefixlens': 'LIST',    
 }
 
 
@@ -42,13 +46,10 @@ class Parser(object):
     def parse(self, ifconfig=None):  # noqa: max-complexity=12
         """
         Parse ifconfig output into self._interfaces.
-
         Optional Arguments:
-
             ifconfig
                 The data (stdout) from the ifconfig command.  Default is to
                 call exec_cmd(self.get_command()).
-
         """
         if not ifconfig:
             ifconfig, errors, return_code = exec_cmd(self.get_command())
@@ -103,6 +104,16 @@ class Parser(object):
             if len(device_dict['inet4']) > 0:
                 device_dict['inet'] = device_dict['inet4'][0]
 
+        # Copy the first 'netmasks' mask to 'netmask' for backwards compatibility
+        for device, device_dict in self._interfaces.items():
+            if len(device_dict['netmasks']) > 0:
+                device_dict['netmask'] = device_dict['netmasks'][0]
+
+        # Copy the first 'broadcast' ip address to 'broadcast' for backwards compatibility
+        for device, device_dict in self._interfaces.items():
+            if len(device_dict['broadcasts']) > 0:
+                device_dict['broadcast'] = device_dict['broadcasts'][0]
+
         # fix it up
         self._interfaces = self.alter(self._interfaces)
 
@@ -110,20 +121,16 @@ class Parser(object):
         """
         Used to provide the ability to alter the interfaces dictionary before
         it is returned from self.parse().
-
         Required Arguments:
-
             interfaces
                 The interfaces dictionary.
-
         Returns: interfaces dict
-
         """
         # fixup some things
         for device, device_dict in interfaces.items():
             if len(device_dict['inet4']) > 0:
                 device_dict['inet'] = device_dict['inet4'][0]
-            if 'inet' in device_dict and not device_dict['inet'] is None:
+            if 'inet' in device_dict and device_dict['inet'] is not None:
                 try:
                     host = socket.gethostbyaddr(device_dict['inet'])[0]
                     interfaces[device]['hostname'] = host
@@ -198,7 +205,6 @@ class WindowsParser(Parser):
     def interfaces(self):
         """
         Returns the full interfaces dictionary.
-
         """
         return self._interfaces
 
@@ -236,10 +242,8 @@ class UnixParser(Parser):
     def get_patterns(cls):
         return [
             r'(?P<device>^[-a-zA-Z0-9:\.]+): flags=(?P<flags>.*) mtu (?P<mtu>\d+)',
-            r'.*inet\s+(?P<inet4>[\d\.]+).*',
-            r'.*inet6\s+(?P<inet6>[\d\:abcdef]+).*',
-            r'.*broadcast (?P<broadcast>[^\s]*).*',
-            r'.*netmask (?P<netmask>[^\s]*).*',
+            r'.*inet\s+(?P<inet4>[\d\.]+)((\s+netmask\s)|\/)(?P<netmasks>[\w.]+)(\s+(brd|broadcast)\s(?P<broadcasts>[^\s]*))?.*',
+            r'.*inet6\s+(?P<inet6>[\d\:abcdef]+)(%\w+)?((\s+prefixlen\s+)|\/)(?P<prefixlens>\d+)',
             r'.*ether (?P<ether>[^\s]*).*',
         ]
 
@@ -247,7 +251,6 @@ class UnixParser(Parser):
     def interfaces(self):
         """
         Returns the full interfaces dictionary.
-
         """
         return self._interfaces
 
@@ -286,12 +289,10 @@ class LinuxParser(UnixParser):
         return super(LinuxParser, cls).get_patterns() + [
             r'(?P<device>^[a-zA-Z0-9:_\-\.]+)(.*)Link encap:(.*).*',
             r'(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
-            r'.*(inet addr:\s*)(?P<inet4>[^\s]+).*',
-            r'.*(inet6 addr:\s*)(?P<inet6>[^\s\/]+)',
+            r'.*(inet addr:\s*)(?P<inet4>[^\s]+)\s+Bcast:(?P<broadcast>[^\s]*)\s+Mask:(?P<netmask>[^\s]*).*',
+            r'.*(inet6 addr:\s*)(?P<inet6>[^\s\/]+)\/(?P<prefixlen>\d+)',
             r'.*(MTU:\s*)(?P<mtu>\d+)',
             r'.*(P-t-P:)(?P<ptp>[^\s]*).*',
-            r'.*(Bcast:)(?P<broadcast>[^\s]*).*',
-            r'.*(Mask:)(?P<netmask>[^\s]*).*',
             r'.*(RX bytes:)(?P<rxbytes>\d+).*',
             r'.*(TX bytes:)(?P<txbytes>\d+).*',
         ]
@@ -368,6 +369,8 @@ class MacOSXParser(UnixParser):
         for device, device_dict in interfaces.items():
             if device_dict['netmask'] is not None:
                 interfaces[device]['netmask'] = hex2dotted(device_dict['netmask'])
+            if device_dict['netmasks'] is not None:
+                interfaces[device]['netmasks'] = [hex2dotted(mask) for mask in device_dict['netmasks']]
         return interfaces
 
     def _default_interface(self, route_output=None):
