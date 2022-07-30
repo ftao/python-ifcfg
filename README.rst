@@ -25,12 +25,14 @@ Usage
 
     for name, interface in ifcfg.interfaces().items():
         # do something with interface
-        print interface['device']
+        print interface['device']       # Device name
         print interface['inet']         # First IPv4 found
         print interface['inet4']        # List of ips
-        print interface['inet6']
-        print interface['netmask']
-        print interface['broadcast']
+        print interface['inet6']        # List of ips
+        print interface['netmask']      # Backwards compat: First netmask
+        print interface['netmasks']     # List of netmasks
+        print interface['broadcast']    # Backwards compat: First broadcast
+        print interface['broadcasts']   # List of broadcast
 
     default = ifcfg.default_interface()
 
@@ -41,41 +43,64 @@ following:
 
     $ python -m ifcfg.cli | python -mjson.tool
     {
-        "eth0": {
-            "broadcast": "172.16.217.255",
-            "ether": "00:0c:29:0c:da:5d",
-            "flags": "4163<up,broadcast,running,multicast> ",
-            "hostname": "derks-vm.local",
-            "inet": "172.16.217.10",
-            "inet4": ["172.16.217.10"],
-            "inet6": ["fe80::20c:29ff:fe0c:da5d"],
-            "mtu": "1500",
-            "name": "eth0",
-            "netmask": "255.255.255.0",
+        "docker0": {
+            "inet": "172.17.0.1",
+            "inet4": [
+                "172.17.0.1"
+            ],
+            "ether": "01:02:9d:04:07:e3",
+            "inet6": [],
+            "netmask": "255.255.0.0",
+            "netmasks": [
+                "255.255.0.0"
+            ],
+            "broadcast": "172.17.255.255",
+            "broadcasts": [
+                "172.17.255.255"
+            ],
+            "prefixlens": [],
+            "device": "docker0",
+            "flags": "4099<UP,BROADCAST,MULTICAST> ",
+            "mtu": "1500"
+        },
+        "enp0s25": {
+            "inet": null,
+            "inet4": [],
+            "ether": "a0:88:b4:3d:67:7b",
+            "inet6": [],
+            "netmask": null,
+            "netmasks": [],
+            "broadcast": null,
+            "broadcasts": [],
+            "prefixlens": [],
+            "device": "enp0s25",
+            "flags": "4099<UP,BROADCAST,MULTICAST> ",
+            "mtu": "1500"
         },
         "lo": {
-            "ether": null,
-            "flags": "73<up,loopback,running> ",
-            "hostname": "localhost",
             "inet": "127.0.0.1",
-            "inet4": ["127.0.0.1"],
-            "inet6": ["::1"],
-            "mtu": "16436",
-            "name": "lo",
+            "inet4": [
+                "127.0.0.1"
+            ],
+            "ether": null,
+            "inet6": [
+                "::1"
+            ],
             "netmask": "255.0.0.0",
+            "netmasks": [
+                "255.0.0.0"
+            ],
+            "broadcast": null,
+            "broadcasts": [
+                null
+            ],
+            "prefixlens": [
+                "128"
+            ],
+            "device": "lo",
+            "flags": "73<UP,LOOPBACK,RUNNING> ",
+            "mtu": "65536"
         },
-        "virbr0": {
-            "broadcast": "192.168.122.255",
-            "ether": "52:54:00:5b:70:0d",
-            "flags": "4099<up,broadcast,multicast> ",
-            "hostname": "derks-vm.local",
-            "inet": "192.168.122.1",
-            "inet4": ["192.168.122.1"],
-            "inet6": [],
-            "mtu": "1500",
-            "name": "virbr0",
-            "netmask": "255.255.255.0",
-        }
     }
 
 
@@ -102,6 +127,18 @@ Before commiting and opening PRs, ensure that you have pre-commit hooks running:
 
 Release notes
 -------------
+
+0.23
+____
+
+* Add support for multiple netmasks, broadcast addresses, as well as ipv6 prefix lengths #67
+
+0.22
+____
+
+* Python 3.7 and 3.8 support #51 #53
+* Default interface detection on Windows #25 #56
+* New flags for unix `ip` command #61
 
 0.22
 ____
