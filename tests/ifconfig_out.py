@@ -284,3 +284,19 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 eth0
 192.168.1.0     0.0.0.0         255.255.255.0   U     600    0        0 eth0
 """
+
+
+LINUX_IPV6 = """
+lo        Link encap:Local Loopback  
+          inet6 addr: 2002:afb:afb::/128 Scope:Global
+          inet6 addr: ::1/128 Scope:Host
+          inet6 addr: fd14:988a:50ee:10c::/64 Scope:Global
+          inet6 addr: ::2/128 Scope:Compat
+          UP LOOPBACK RUNNING MULTICAST  MTU:65536  Metric:1
+          RX packets:2768145 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2768145 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:4642165574 (4.6 GB)  TX bytes:4642165574 (4.6 GB)
+
+
+"""
