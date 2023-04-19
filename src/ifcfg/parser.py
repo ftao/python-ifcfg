@@ -20,7 +20,7 @@ DEVICE_PROPERTY_DEFAULTS = {
     'netmasks': 'LIST',
     'broadcast': None,
     'broadcasts': 'LIST',
-    'prefixlens': 'LIST',    
+    'prefixlens': 'LIST',
 }
 
 
@@ -242,7 +242,7 @@ class UnixParser(Parser):
     def get_patterns(cls):
         return [
             r'(?P<device>^[-a-zA-Z0-9:\.]+): flags=(?P<flags>.*) mtu (?P<mtu>\d+)',
-            r'.*inet\s+(?P<inet4>[\d\.]+)((\s+netmask\s)|\/)(?P<netmasks>[\w.]+)(\s+(brd|broadcast)\s(?P<broadcasts>[^\s]*))?.*',
+            r'.*inet\s+(?P<inet4>[\d\.]+)(\s+-->\s+(?P<_inet4>[\d\.]+))?((\s+netmask\s)|\/)(?P<netmasks>[\w.]+)((\s+(brd|broadcast)\s(?P<broadcasts>[^\s]*))?.*)?',
             r'.*inet6\s+(?P<inet6>[\d\:abcdef]+)(%\w+)?((\s+prefixlen\s+)|\/)(?P<prefixlens>\d+)',
             r'.*ether (?P<ether>[^\s]*).*',
         ]

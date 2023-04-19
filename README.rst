@@ -128,6 +128,11 @@ Before commiting and opening PRs, ensure that you have pre-commit hooks running:
 Release notes
 -------------
 
+0.24
+----
+
+* add support for arrow notation inet #71
+
 0.23
 ____
 
