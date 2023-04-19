@@ -1,5 +1,12 @@
-clean: clean-build clean-pyc clean-test
+all: build
 
+install: clean
+	python setup.py install
+
+build: clean
+	python setup.py build
+
+clean: clean-build clean-pyc clean-test
 
 clean-build: ## remove build artifacts
 	rm -fr build/
@@ -47,3 +54,6 @@ dist: clean  ## Generate wheels distribution
 	python setup.py bdist_wheel
 	python setup.py sdist
 	ls -l dist
+
+req:
+	pip install --requirement requirements_dev.txt

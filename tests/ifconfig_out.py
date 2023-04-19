@@ -195,6 +195,8 @@ en5: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
         nd6 options=281<PERFORMNUD,INSECURE,DAD>
         media: autoselect
         status: active
+utun3: flags=8051<UP,POINTOPOINT,RUNNING,MULTICAST> mtu 1400
+        inet 10.63.73.73 --> 10.63.73.73 netmask 0xffffffff
 """
 
 # See: https://github.com/ftao/python-ifcfg/issues/40

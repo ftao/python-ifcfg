@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from nose.tools import eq_, ok_, raises
+
 import ifcfg
 from ifcfg.parser import LinuxParser, NullParser
-from nose.tools import eq_, ok_, raises
 
 from . import ifconfig_out
 from .base import IfcfgTestCase
@@ -107,11 +108,13 @@ class IfcfgTestCase(IfcfgTestCase):
         ifcfg.Parser = ifcfg.get_parser_class()
         parser = ifcfg.get_parser(ifconfig=ifconfig_out.MACOSX2)
         interfaces = parser.interfaces
-        self.assertEqual(len(interfaces.keys()), 9)
+        self.assertEqual(len(interfaces.keys()), 10)
         eq_(interfaces['lo0']['inet'], '127.0.0.1')
         eq_(interfaces['lo0']['inet4'], ['127.0.0.1', '127.0.1.99'])
         eq_(interfaces['lo0']['netmask'], '255.0.0.0')
         eq_(interfaces['lo0']['netmasks'], ['255.0.0.0', '255.0.0.0'])
+        eq_(interfaces['utun3']['inet'], '10.63.73.73')
+        eq_(interfaces['utun3']['netmask'], '255.255.255.255')
 
     def test_default_interface(self):
         ifcfg.distro = 'Linux'
