@@ -289,8 +289,8 @@ class LinuxParser(UnixParser):
         return super(LinuxParser, cls).get_patterns() + [
             r'(?P<device>^[a-zA-Z0-9:_\-\.]+)(.*)Link encap:(.*).*',
             r'(.*)Link encap:(.*)(HWaddr )(?P<ether>[^\s]*).*',
-            r'.*(inet addr:\s*)(?P<inet4>[^\s]+)\s+Bcast:(?P<broadcast>[^\s]*)\s+Mask:(?P<netmask>[^\s]*).*',
-            r'.*(inet6 addr:\s*)(?P<inet6>[^\s\/]+)\/(?P<prefixlen>\d+)',
+            r'.*(inet addr:\s*)(?P<inet4>[^\s]+)\s+Bcast:(?P<broadcasts>[^\s]*)\s+Mask:(?P<netmasks>[^\s]*).*',
+            r'.*(inet6 addr:\s*)(?P<inet6>[^\s\/]+)\/(?P<prefixlens>\d+)',
             r'.*(MTU:\s*)(?P<mtu>\d+)',
             r'.*(P-t-P:)(?P<ptp>[^\s]*).*',
             r'.*(RX bytes:)(?P<rxbytes>\d+).*',
@@ -323,8 +323,8 @@ class UnixIPParser(UnixParser):
             r'.*(inet\s)(?P<inet4>[\d\.]+)',
             r'.*(inet6 )(?P<inet6>[^/]*).*',
             r'.*(ether )(?P<ether>[^\s]*).*',
-            r'.*inet\s.*(brd )(?P<broadcast>[^\s]*).*',
-            r'.*(inet )[^/]+(?P<netmask>[/][0-9]+).*',
+            r'.*inet\s.*(brd )(?P<broadcasts>[^\s]*).*',
+            r'.*(inet )[^/]+(?P<netmasks>[/][0-9]+).*',
         ]
 
     def _default_interface(self, route_output=None):

@@ -124,3 +124,11 @@ class IfcfgTestCase(IfcfgTestCase):
             ifconfig=ifconfig_out.LINUX3, route_output=route_output
         )
         ok_(res)
+
+    def test_linux_ipv6(self):
+        ifcfg.distro = 'Linux'
+        ifcfg.Parser = LinuxParser
+        parser = ifcfg.get_parser(ifconfig=ifconfig_out.LINUX_IPV6)
+        interfaces = parser.interfaces
+        self.assertEqual(len(interfaces.keys()), 1)
+        eq_(interfaces['lo']['prefixlens'], ['128', '128', '64', '128'])
